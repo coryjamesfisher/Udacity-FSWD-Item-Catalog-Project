@@ -1,12 +1,12 @@
 Item Catalog Project
 ==================================================
 
-Programs
+Applications
 --------------------------------------
 
-1. [Amazon Importer](plugins/import/amazon/README.md)
-2. [Catalog REST API](backend/README.md)
-3. [Catalog Site](frontend/README.md)
+1. [REST API](backend/README.md)
+2. [Website](frontend/README.md)
+3. [Amazon Importer](plugins/import/amazon/README.md)
 
 Useful Commands
 --------------------------------------
