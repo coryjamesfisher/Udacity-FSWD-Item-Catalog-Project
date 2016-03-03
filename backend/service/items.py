@@ -1,3 +1,5 @@
+import db.item
+
 class items:
 
     def __init__(self):
@@ -9,14 +11,14 @@ class items:
 
         return []
 
-    def get_items_by_code(self, category_code):
+    def get_items_by_category(self, category_code):
 
         return []
 
-    def get_items_by_category_code(selfself, category_code):
+    def get_item_by_code(self, code):
 
-        return []
+        return db.item.item(code, "FIRST ITEM", 1.00, ["1"])
 
-    def create_item(self, name, code):
+    def create_item(self, code, name, price, categories):
 
-        return True
+        return db.item.item(code, name, price, categories)
