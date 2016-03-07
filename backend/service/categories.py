@@ -9,7 +9,7 @@ class categories:
 
     def get_categories(self):
 
-        return []
+        return [self.get_category_by_code("1")]
 
     def get_category_by_code(self, category_code):
 

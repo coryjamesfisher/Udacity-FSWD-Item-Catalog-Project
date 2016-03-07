@@ -1,5 +1,6 @@
 #!/usr/bin/python
 from flask import Flask, jsonify
+from rest import categories
 
 # DATABASE = '/tmp/item_catalog.db'
 # DEBUG = True
@@ -9,9 +10,7 @@ from flask import Flask, jsonify
 
 app = Flask(__name__)
 
-@app.route('/')
-def index():
-	return "Hello, Cory!"
+app.register_blueprint(categories.categories_rest)
 
 if __name__ == '__main__':
 	app.run(debug=True)
