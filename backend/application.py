@@ -1,6 +1,6 @@
 #!/usr/bin/python
 from flask import Flask, jsonify
-from rest import categories
+from rest import categories, items
 
 # DATABASE = '/tmp/item_catalog.db'
 # DEBUG = True
@@ -11,6 +11,7 @@ from rest import categories
 app = Flask(__name__)
 
 app.register_blueprint(categories.categories_rest)
+app.register_blueprint(items.items_rest)
 
 if __name__ == '__main__':
 	app.run(debug=True)

@@ -18,3 +18,7 @@ class categories:
     def create_category(self, code, name):
 
         return db.category.category(code, name)
+
+    def update_category(self, code, name):
+
+        return db.category.category(code, name)
