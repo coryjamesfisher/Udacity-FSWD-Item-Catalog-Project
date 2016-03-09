@@ -11,12 +11,12 @@ class TestItems(unittest.TestCase):
         items = self.itemsService.get_items()
         self.assertIsInstance(items, list)
 
-    def test_get_item_by_code(self):
-        item = self.itemsService.get_item_by_code("A")
+    def test_get_item_by_id(self):
+        item = self.itemsService.get_item_by_id(1)
         self.assertIsInstance(item, db.item.item)
 
     def test_get_items_by_category(self):
-        items = self.itemsService.get_items_by_category("1")
+        items = self.itemsService.get_items_by_category(1)
         self.assertIsInstance(items, list)
 
     def test_create_item(self):

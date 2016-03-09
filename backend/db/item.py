@@ -1,7 +1,8 @@
 class item:
 
-    def __init__(self, code, name, price, categories):
+    def __init__(self, id, code, name, price, categories):
 
+        self.id = id
         self.code = code
         self.name = name
         self.price = price
