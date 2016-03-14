@@ -1,0 +1,73 @@
+import item
+from datetime import datetime
+
+class item_repository:
+
+    def __init__(self, connection):
+        self.conn = connection
+
+    def create(self, item):
+        cur = self.conn.cursor()
+        cur.execute("""INSERT INTO items(code, name, price) VALUES(%s, %s, %s) RETURNING id""", (item.code, item.name, item.price))
+        item.id = cur.fetchone()[0]
+
+        for category_id in item.categories:
+            cur.execute("""INSERT INTO item_categories(item_id, category_id) VALUES(%s, %s)""", (item.id, category_id))
+
+        cur.close()
+        self.conn.commit()
+
+        return item
+
+    def get_by_id(self, id):
+        cur = self.conn.cursor()
+        cur.execute("""SELECT i.id, i.code, i.name, i.price, i.created_on, array_to_string(array_agg(c.id), ',') as categories
+FROM items i
+LEFT JOIN item_categories ic on ic.item_id = i.id
+INNER JOIN categories c ON c.id = ic.category_id
+WHERE i.id=%s
+GROUP BY i.id, i.code, i.name, i.price, i.created_on""", (id,))
+        row = cur.fetchone()
+        cur.close()
+
+        return item.item(row[0], row[1], row[2], row[3], row[4], row[5].split(","))
+
+    def get_all(self):
+        cur = self.conn.cursor()
+        cur.execute("""SELECT i.id, i.code, i.name, i.price, i.created_on, array_to_string(array_agg(c.id), ',') as categories
+FROM items i
+LEFT JOIN item_categories ic on ic.item_id = i.id
+INNER JOIN categories c ON c.id = ic.category_id
+GROUP BY i.id, i.code, i.name, i.price, i.created_on""")
+        rows = cur.fetchall()
+        cur.close()
+
+        items = []
+
+        for row in rows:
+            print row
+            items.append(item.item(row[0], row[1], row[2], row[3], row[4], row[5].split(",")))
+
+        return items
+
+
+
+    def get_all_by_category(self, category_id):
+
+        cur = self.conn.cursor()
+        cur.execute("""SELECT i.id, i.code, i.name, i.price, i.created_on, array_to_string(array_agg(c.id), ',') as categories
+FROM items i
+INNER JOIN item_categories ic on ic.item_id = i.id
+INNER JOIN categories c ON c.id = ic.category_id
+WHERE c.id=%s
+GROUP BY i.id, i.code, i.name, i.price, i.created_on""", (category_id,))
+        rows = cur.fetchall()
+        cur.close()
+
+        items = []
+
+        for row in rows:
+            items.append(item.item(row[0], row[1], row[2], row[3], row[4], row[5].split(",")))
+
+        return items
+

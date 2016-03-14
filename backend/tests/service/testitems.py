@@ -12,15 +12,15 @@ class TestItems(unittest.TestCase):
         self.assertIsInstance(items, list)
 
     def test_get_item_by_id(self):
-        item = self.itemsService.get_item_by_id(1)
+        item = self.itemsService.get_item_by_id(6)
         self.assertIsInstance(item, db.item.item)
 
     def test_get_items_by_category(self):
-        items = self.itemsService.get_items_by_category(1)
+        items = self.itemsService.get_items_by_category(9)
         self.assertIsInstance(items, list)
 
     def test_create_item(self):
-        item = self.itemsService.create_item("A", "FIRST ITEM", 1.00, ["1"])
+        item = self.itemsService.create_item("A", "FIRST ITEM", 1.00, [9])
         self.assertIsInstance(item, db.item.item)
 
 if __name__ == '__main__':
