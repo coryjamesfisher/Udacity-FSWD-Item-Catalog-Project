@@ -1,11 +1,9 @@
 import db.item_repository
 import db.item
-import psycopg2
 
 class items:
 
-    def __init__(self):
-       conn = psycopg2.connect("dbname='main' user='serviceuser' password='serviceuser' host='localhost'")
+    def __init__(self, conn):
        self.item_repository = db.item_repository.item_repository(conn)
 
     def get_items(self):
@@ -18,7 +16,7 @@ class items:
         return self.item_repository.get_by_id(id)
 
     def create_item(self, code, name, price, categories):
-        item = db.item.item(None, code, name, price, categories)
+        item = db.item.item(None, code, name, price, None, categories)
         return self.item_repository.create(item)
 
     def update_item(self, id, code, name, price, categories):

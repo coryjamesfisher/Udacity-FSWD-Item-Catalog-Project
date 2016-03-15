@@ -45,7 +45,6 @@ GROUP BY i.id, i.code, i.name, i.price, i.created_on""")
         items = []
 
         for row in rows:
-            print row
             items.append(item.item(row[0], row[1], row[2], row[3], row[4], row[5].split(",")))
 
         return items

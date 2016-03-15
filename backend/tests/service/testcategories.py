@@ -1,11 +1,23 @@
 import unittest
 import service.categories
 import db.category
+import psycopg2
 
 class TestCategories(unittest.TestCase):
 
     def setUp(self):
-        self.categoriesService = service.categories.categories()
+        self.conn = psycopg2.connect("dbname='main' user='serviceuser' password='serviceuser' host='localhost'")
+        cur = self.conn.cursor()
+        cur.execute("CREATE TEMPORARY TABLE items as SELECT * FROM items;")
+        cur.execute("CREATE TEMPORARY TABLE categories as SELECT * FROM categories;")
+        cur.execute("CREATE TEMPORARY TABLE item_categories as SELECT * FROM item_categories;")
+        cur.close()
+        self.conn.commit()
+
+        self.categoriesService = service.categories.categories(self.conn)
+
+    def tearDown(self):
+        self.conn.close()
 
     def test_get_all_categories(self):
         categories = self.categoriesService.get_categories()
