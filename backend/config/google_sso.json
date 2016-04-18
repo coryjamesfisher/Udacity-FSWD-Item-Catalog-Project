@@ -1,0 +1,9 @@
+{
+  "web": {
+    "client_id": "1099338626741-0qbg100alipuei46fhc3vemsgn6nh491.apps.googleusercontent.com",
+    "client_secret": "jkMk77lbzSrbeiBQkypxYU7r",
+    "redirect_uris": ["http://localhost/sso?provider=google"],
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://accounts.google.com/o/oauth2/token"
+  }
+}
