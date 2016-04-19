@@ -1,11 +1,12 @@
 import json
+import httplib2
 from oauth2client import client
 import db.user_repository
 
 class google:
 
     def __init__(self, conn):
-       self.user_repository = db.user_repository.user_repository(conn)
+       self.userService = service.users.users(conn)
 
     def register_or_sign_in(self, auth_code):
        flow = client.flow_from_clientsecrets(
@@ -21,8 +22,17 @@ class google:
            raise ValueError('Please enter an authorization code')
 
        credentials = flow.step2_exchange(auth_code)
-       credentials = credentials.to_json()
 
 
-       json.dumps(credentials)
-       print credentials
+       http = httplib2.Http()
+       credentials.authorize(http)
+       resp, content = http.request("https://www.googleapis.com/oauth2/v2/userinfo", "GET")
+       user_info = json.loads(content)
+
+       user = self.userService.findByGoogleUserId(user_info["id"])
+
+       if (user):
+           return user
+
+       # @todo create service.users.users create & findByGoogleUserId methods
+       return self.userService.create(user_info["email"], user_info["given_name"], user_info["family_name"], user_info["id"], None) 
