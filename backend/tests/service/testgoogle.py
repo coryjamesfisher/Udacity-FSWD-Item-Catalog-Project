@@ -6,13 +6,14 @@ import db.user
 class TestGoogle(unittest.TestCase):
 
     def setUp(self):
+
        self.conn = psycopg2.connect("dbname='main' user='serviceuser' password='serviceuser' host='localhost'")
-#        cur = self.conn.cursor()
-#        cur.execute("CREATE TEMPORARY TABLE items as SELECT * FROM items;")
-#        cur.execute("CREATE TEMPORARY TABLE categories as SELECT * FROM categories;")
-#        cur.execute("CREATE TEMPORARY TABLE item_categories as SELECT * FROM item_categories;")
-#        cur.close()
-#        self.conn.commit()
+       cur = self.conn.cursor()
+       cur.execute("CREATE TEMPORARY TABLE users as SELECT * FROM users where 1=0;")
+       cur.execute("CREATE TEMPORARY SEQUENCE test_user_sequence START WITH 1")
+       cur.execute("ALTER TABLE users ALTER COLUMN id SET DEFAULT nextval('test_user_sequence')")
+       cur.close()
+       self.conn.commit()
 
        self.google = service.google.google(self.conn)
 

@@ -9,7 +9,7 @@ class user_repository:
     def create(self, user):
 
         cur = self.conn.cursor()
-        cur.execute("""INSERT INTO user(email, first_name, last_name, google_id, facebook_id) VALUES(%s, %s, %s, %s, %s) RETURNING id""", (user.email, user.first_name, user.last_name, user.google_id, user.facebook_id))
+        cur.execute("""INSERT INTO users(email, first_name, last_name, google_id, facebook_id) VALUES(%s, %s, %s, %s, %s) RETURNING id""", (user.email, user.first_name, user.last_name, user.google_id, user.facebook_id))
         user.id = cur.fetchone()[0]
         cur.close()
         self.conn.commit()
@@ -19,16 +19,29 @@ class user_repository:
     def get_by_id(self, id):
 
         cur = self.conn.cursor()
-        cur.execute("""SELECT id, email, first_name, last_name, google_id, facebook_id FROM user WHERE id=%s""", (id,))
+        cur.execute("""SELECT id, email, first_name, last_name, google_id, facebook_id FROM users WHERE id=%s""", (id,))
         row = cur.fetchone()
         cur.close()
 
         return user.user(row[0], row[1], row[2], row[3], row[4], row[5])
 
+    def get_by_google_user_id(self, google_user_id):
+
+        cur = self.conn.cursor()
+        cur.execute("""SELECT id, email, first_name, last_name, google_id, facebook_id FROM users WHERE google_id=%s""", (google_user_id,))
+        row = cur.fetchone()
+        cur.close()
+
+	if (row == None):
+		return False;
+
+        return user.user(row[0], row[1], row[2], row[3], row[4], row[5])
+
+
     def get_all(self):
 
         cur = self.conn.cursor()
-        cur.execute("""SELECT id, email, first_name, last_name, google_id, facebook_id FROM user""")
+        cur.execute("""SELECT id, email, first_name, last_name, google_id, facebook_id FROM users""")
         rows = cur.fetchall()
         cur.close()
 

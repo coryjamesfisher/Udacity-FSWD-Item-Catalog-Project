@@ -11,6 +11,15 @@ class TestCategories(unittest.TestCase):
         cur.execute("CREATE TEMPORARY TABLE items as SELECT * FROM items;")
         cur.execute("CREATE TEMPORARY TABLE categories as SELECT * FROM categories;")
         cur.execute("CREATE TEMPORARY TABLE item_categories as SELECT * FROM item_categories;")
+	cur.execute("INSERT INTO items (id, code, name, price, created_on) values(1, 'TEST', 'Test Item', 5.95, NOW())") 
+	cur.execute("INSERT INTO categories (id, code, name) values(1, 'TEST', 'Test Category')") 
+	cur.execute("INSERT INTO item_categories (item_id, category_id) values(1, 1)") 
+        cur.execute("CREATE TEMPORARY SEQUENCE test_item_sequence START WITH 2")
+        cur.execute("ALTER TABLE items ALTER COLUMN id SET DEFAULT nextval('test_item_sequence')")
+        cur.execute("CREATE TEMPORARY SEQUENCE test_category_sequence START WITH 1")
+        cur.execute("ALTER TABLE categories ALTER COLUMN id SET DEFAULT nextval('test_category_sequence')")
+
+
         cur.close()
         self.conn.commit()
 
@@ -41,7 +50,7 @@ class TestCategories(unittest.TestCase):
         self.assertIsInstance(category, db.category.category)
 
     def test_update_category(self):
-        category = self.categoriesService.update_category(1, "A", "FIRST CATEGORY")
+        category = self.categoriesService.update_category(1, "TEST2", "Test Category2")
         self.assertIsInstance(category, db.category.category)
 
 if __name__ == '__main__':

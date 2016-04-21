@@ -2,6 +2,7 @@ import json
 import httplib2
 from oauth2client import client
 import db.user_repository
+import service.users
 
 class google:
 
@@ -29,7 +30,7 @@ class google:
        resp, content = http.request("https://www.googleapis.com/oauth2/v2/userinfo", "GET")
        user_info = json.loads(content)
 
-       user = self.userService.findByGoogleUserId(user_info["id"])
+       user = self.userService.find_by_google_user_id(user_info["id"])
 
        if (user):
            return user

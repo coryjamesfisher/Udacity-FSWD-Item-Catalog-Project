@@ -1,8 +1,15 @@
+/*
+Note must be run with:
+sudo -u postgres psql -f schema/init.sql
+*/
+
 DROP DATABASE IF EXISTS main;
 
 CREATE DATABASE main;
 
 \connect main
+
+CREATE EXTENSION IF NOT EXISTS citext;
 
 CREATE TABLE categories
 (
@@ -25,4 +32,18 @@ CREATE TABLE item_categories
 	item_id INT NOT NULL REFERENCES items(id),
 	category_id INT NOT NULL REFERENCES categories(id),
 	PRIMARY KEY (item_id, category_id)
-)
+);
+
+CREATE TABLE users
+(
+	id SERIAL PRIMARY KEY,
+	email citext UNIQUE NOT NULL,
+	first_name VARCHAR(50) NOT NULL,
+	last_name VARCHAR(50) NOT NULL,
+	google_id VARCHAR(100) UNIQUE NULL,
+	facebook_id VARCHAR(100) UNIQUE NULL
+);
+
+GRANT ALL PRIVILEGES ON DATABASE main TO serviceuser;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO serviceuser;
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO serviceuser;
