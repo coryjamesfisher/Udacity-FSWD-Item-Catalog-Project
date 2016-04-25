@@ -12,6 +12,7 @@ class TestGoogle(unittest.TestCase):
        cur.execute("CREATE TEMPORARY TABLE users as SELECT * FROM users where 1=0;")
        cur.execute("CREATE TEMPORARY SEQUENCE test_user_sequence START WITH 1")
        cur.execute("ALTER TABLE users ALTER COLUMN id SET DEFAULT nextval('test_user_sequence')")
+       cur.execute("INSERT INTO users(first_name, last_name, email, google_id) values('Cory', 'Fisher', 'coryjamesfisher@forthecoder.com', '117370290112067995028')")
        cur.close()
        self.conn.commit()
 
@@ -20,8 +21,12 @@ class TestGoogle(unittest.TestCase):
     def tearDown(self):
         self.conn.close()
 
-    def test_register_or_sign_in(self):
-        user = self.google.register_or_sign_in("")
+    def test_register(self):
+        user = self.google.register("")
+        self.assertIsInstance(user, db.user.user)
+
+    def test_auth(self):
+        user = self.google.auth("")
         self.assertIsInstance(user, db.user.user)
 
 if __name__ == '__main__':

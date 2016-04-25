@@ -4,15 +4,23 @@ import service.facebook
 class auth:
 
     def __init__(self, conn):
-       self.google = service.google.google(conn)
-       self.facebook = service.facebook.facebook(conn)
+       self.conn = conn
 
-    def register_or_sign_in(self, auth_code, provider):
+    def authenticate(self, auth_code, provider):
 
+	provider = self.providerFactory(provider)
+        return provider.auth(auth_code)
+
+    def register(self, auth_code, provider):
+        provider = self.providerFactory(provider)
+        return provider.register(auth_code)
+
+    def providerFactory(provider):
 	if (provider == "google"):
-            return self.google.auth(auth_code)
+            return service.google.google(conn)
 
         if (provider == "facebook"):
-            return self.facebook.auth(auth_code)
+            return service.facebook.facebook(conn)
 
         raise ValueError("Invalid sso provider")
+
