@@ -16,5 +16,12 @@ app.register_blueprint(categories.categories_rest)
 app.register_blueprint(items.items_rest)
 app.register_blueprint(sample.client_rest)
 
+@app.after_request
+def after_request(response):
+	response.headers.add('Access-Control-Allow-Origin', '*')
+        response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+        response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
+	return response
+
 if __name__ == '__main__':
 	app.run(debug=True, host='0.0.0.0', port=8080)

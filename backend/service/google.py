@@ -13,7 +13,7 @@ class google:
        flow = client.flow_from_clientsecrets(
            'config/google_sso.json',
            scope='profile email',
-           redirect_uri='http://localhost/sso?provider=google')
+           redirect_uri='http://localhost:8000/sso?provider=google')
 
        if (auth_code == ""):
            print flow.step1_get_authorize_url()
@@ -40,7 +40,7 @@ class google:
        flow = client.flow_from_clientsecrets(
            'config/google_sso.json',
            scope='profile email',
-           redirect_uri='http://localhost/sso?provider=google')
+           redirect_uri='http://localhost:8000/sso?provider=google')
 
        if (auth_code == ""):
            print flow.step1_get_authorize_url()

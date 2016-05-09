@@ -13,7 +13,7 @@ function handleRequest(request, response){
         try {
 	    fs.statSync("htdocs" + request.url);
         } catch (e) {
-            response.writeHead(404, {"Content-Type": "text/plain"});
+            response.writeHead(404, {"Content-Type": "text/plain", "Access-Control-Allow-Origin": "*"});
             response.end("404 Not Found\n");
             return;
         }
@@ -30,16 +30,16 @@ function handleRequest(request, response){
         filename = "htdocs/index.html";
     }
 
-    response.writeHead(200, {"Content-Type": contentType});
+    response.writeHead(200, {"Content-Type": contentType, "Access-Control-Allow-Origin": "*"});
 
     // Read in the file and write it to the response
     fs.readFile(filename, "binary", function(err, file) {
         if (err) {
-            response.writeHead(500, {"Content-Type": "text/plain"});
+            response.writeHead(500, {"Content-Type": "text/plain", "Access-Control-Allow-Origin": "*"});
             response.end(err + "\n");
         }
 
-        response.writeHead(200, {"Content-Type": contentType});
+        response.writeHead(200, {"Content-Type": contentType, "Access-Control-Allow-Origin": "*"});
         response.write(file, "binary");
         response.end();
     });

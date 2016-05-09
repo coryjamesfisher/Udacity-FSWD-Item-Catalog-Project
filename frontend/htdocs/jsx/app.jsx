@@ -12,12 +12,14 @@ var ItemViewPage = require('./components/page/item/view.jsx');
 var CategoryEditPage = require('./components/page/category/edit.jsx');
 var CategoryItemListPage = require('./components/page/category/item_list.jsx');
 
+var PageHeader = require('./components/layout/header.jsx');
+
 // Application wrapper
 var App = React.createClass({
 
     render: function() {
         return <div className="App">
-		if logged in show logout else login
+            <PageHeader logged_in="false"/>
             {this.props.children}
             </div>
     }
@@ -27,7 +29,7 @@ ReactDOM.render(
     <Router history={browserHistory}>
         <Route path="/" component={App}>
             <IndexRoute component={RecentItemsPage}/>
-            <Route path="/login" component={LoginPage}/>
+            <Route path="/sso" component={LoginPage}/>
             <Route path="/list-categories" component={CategoryListPage}/>
             <Route path="/item/edit" component={ItemEditPage}/>
             <Route path="/item/view" component={ItemViewPage}/>
