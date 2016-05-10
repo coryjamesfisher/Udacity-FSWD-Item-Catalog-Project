@@ -1,39 +1,43 @@
+var AuthenticationActions = require('../../actions/AuthenticationActions.jsx');
+var UserStore = require('../../stores/UserStore.jsx');
+
 module.exports = React.createClass({
 
 	getInitialState: function() {
 		return {
-			token: ""
+			token: "",
+			loggedIn: false,
+			error: ""
+		}
+	},
+
+	fetchState: function() {
+		return {
+			token: UserStore.getToken(),
+			loggedIn: UserStore.loggedIn()
 		}
 	},
 
 	componentDidMount: function() {
+		UserStore.addChangeListener(this._onChange);
+
 		let url = this.props.location.query;
+		AuthenticationActions.login(url.provider, url.code);
 
-		this.serverRequest = $.ajax(
-			{
-				url: "http://localhost:8080/rest/v1/auth/sso/" + url.provider + "/auth",
-				method: "POST",
-				data: JSON.stringify({"auth_token": url.code}),
-				contentType: "application/json",
-				success: function (result) {
-					this.setState({
-						token: result.token
-					});
-				}.bind(this)
-			});
-
-		console.log(url.provider);
-		console.log(url.code);
 		return {}
 	},
 
-	componentDidUnmount: function() {
-		this.serverRequest.abort();
+	_onChange: function() {
+		this.setState(this.fetchState());
 	},
 
 	render: function() {
 
 		return <div>
+			{this.state.error}
+			<br/>
+			{this.state.loggedIn}
+			<br/>
 			{this.state.token}
 		</div>
 	}
