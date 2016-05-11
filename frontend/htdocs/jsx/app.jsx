@@ -12,15 +12,47 @@ var ItemViewPage = require('./components/page/item/view.jsx');
 var CategoryEditPage = require('./components/page/category/edit.jsx');
 var CategoryItemListPage = require('./components/page/category/item_list.jsx');
 
+// Layout
 var PageHeader = require('./components/layout/header.jsx');
+
+// Application state
+var UserStore = require('./stores/UserStore.jsx');
 
 // Application wrapper
 var App = React.createClass({
 
+    getInitialState: function() {
+		return {
+			token: "",
+			loggedIn: false,
+			error: ""
+		}
+	},
+
+    fetchState: function() {
+		return {
+			token: UserStore.getToken(),
+			loggedIn: UserStore.loggedIn()
+		}
+	},
+
+    componentDidMount: function() {
+		UserStore.addChangeListener(this._onChange);
+
+		return {}
+	},
+
+    _onChange: function() {
+        this.setState(this.fetchState());
+    },
+
     render: function() {
         return <div className="App">
-            <PageHeader logged_in="false"/>
-            {this.props.children}
+            <PageHeader logged_in={this.state.loggedIn} token={this.state.token}/>
+            {this.props.children && React.cloneElement(this.props.children, {
+              loggedIn: this.state.loggedIn,
+              token: this.state.token
+            })}
             </div>
     }
 });

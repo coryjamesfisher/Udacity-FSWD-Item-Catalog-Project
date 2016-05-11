@@ -1,7 +1,12 @@
 var AuthenticationActions = require('../../actions/AuthenticationActions.jsx');
 var UserStore = require('../../stores/UserStore.jsx');
 
+
 module.exports = React.createClass({
+
+	contextTypes: {
+    	router: React.PropTypes.object.isRequired
+  	},
 
 	getInitialState: function() {
 		return {
@@ -28,7 +33,8 @@ module.exports = React.createClass({
 	},
 
 	_onChange: function() {
-		this.setState(this.fetchState());
+		this.context.router.push('/');
+		//this.setState(this.fetchState());
 	},
 
 	render: function() {
