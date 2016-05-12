@@ -23,6 +23,9 @@ function handleRequest(request, response){
     if (/^\/js\//.exec(request.url)) {
         contentType = "text/javascript";
         filename = "htdocs" + request.url;
+    } else if (/^\/css\//.exec(request.url)) {
+        contentType = "text/css";
+        filename = "htdocs" + request.url;
     } else {
 
         // All other paths yield index.html
@@ -31,19 +34,28 @@ function handleRequest(request, response){
     }
 
     response.writeHead(200, {"Content-Type": contentType, "Access-Control-Allow-Origin": "*"});
+    doFileRead(response, filename, contentType);
+    console.log(filename + " with ct:" + contentType);
 
     // Read in the file and write it to the response
-    fs.readFile(filename, "binary", function(err, file) {
+}
+
+function doFileRead(response, filename, contentType) {
+    fs.readFile(filename, function(err, file) {
         if (err) {
             response.writeHead(500, {"Content-Type": "text/plain", "Access-Control-Allow-Origin": "*"});
             response.end(err + "\n");
+            return;
         }
 
         response.writeHead(200, {"Content-Type": contentType, "Access-Control-Allow-Origin": "*"});
-        response.write(file, "binary");
-        response.end();
+//        response.write(file, "binary");
+ //       response.end("\n");
+	response.end(file, 'utf-8');
+	return;
     });
 }
+
 
 var server = http.createServer(handleRequest);
 

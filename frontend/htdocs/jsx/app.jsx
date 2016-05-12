@@ -14,6 +14,7 @@ var CategoryItemListPage = require('./components/page/category/item_list.jsx');
 
 // Layout
 var PageHeader = require('./components/layout/header.jsx');
+var PageFooter = require('./components/layout/footer.jsx');
 
 // Application state
 var UserStore = require('./stores/UserStore.jsx');
@@ -47,12 +48,15 @@ var App = React.createClass({
     },
 
     render: function() {
-        return <div className="App">
+        return <div className="app">
             <PageHeader logged_in={this.state.loggedIn} token={this.state.token}/>
-            {this.props.children && React.cloneElement(this.props.children, {
-              loggedIn: this.state.loggedIn,
-              token: this.state.token
-            })}
+            <main>
+                {this.props.children && React.cloneElement(this.props.children, {
+                  loggedIn: this.state.loggedIn,
+                  token: this.state.token
+                })}
+            </main>
+            <PageFooter/>
             </div>
     }
 });

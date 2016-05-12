@@ -10,8 +10,8 @@ module.exports = React.createClass({
             loginTextArea = <span>Logout</span>
         }
 
-		return <div>
-            {loginTextArea}
-		</div>
+		return <header>
+            <span>Catalog App</span> {loginTextArea}
+		</header>
 	}
 });

@@ -1,0 +1,18 @@
+body {
+    width: 100%;
+}
+
+div.app > main {
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+div.app > header {
+    width: 100%;
+    background-color: teal;
+}
+
+div.app > footer {
+    width: 100%;
+}
