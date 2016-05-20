@@ -1,17 +1,32 @@
+var AuthenticationActions = require('../../actions/AuthenticationActions.jsx');
+
 module.exports = React.createClass({
+
+    onLogoutClicked: function() {
+
+        AuthenticationActions.logout();
+    },
+
+    onLoginClicked: function() {
+
+        AuthenticationActions.thirdPartyAuth("google");
+    },
 
 	render: function() {
 
         var loginTextArea = "";
 
         if (this.props.logged_in == false) {
-            loginTextArea = <a href="https://accounts.google.com/o/oauth2/auth?scope=profile email&redirect_uri=http://localhost:8000/sso?provider=google&response_type=code&client_id=1099338626741-0qbg100alipuei46fhc3vemsgn6nh491.apps.googleusercontent.com">Login</a>
+            loginTextArea = <button onClick={this.onLoginClicked}>Login</button>
         } else {
-            loginTextArea = <span>Logout</span>
+            loginTextArea = <button onClick={this.onLogoutClicked}>Logout</button>
         }
 
 		return <header>
-            <span>Catalog App</span> {loginTextArea}
+            <span className="siteTitle">Catalog This</span>
+            <nav className="site">Catalog</nav>
+            <nav className="user">{loginTextArea}</nav>
+            <div className="clear"></div>
 		</header>
 	}
 });

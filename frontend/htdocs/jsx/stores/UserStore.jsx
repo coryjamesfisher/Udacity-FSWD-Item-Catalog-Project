@@ -31,6 +31,13 @@ AppDispatcher.register(function(action) {
 
             UserStore.emitChange();
             break;
+        case "LOGOUT_COMPLETE":
+
+            _loggedIn = false;
+            _token = "";
+
+            UserStore.emitChange();
+            break;
 
         default:
         // no op

@@ -51,10 +51,12 @@ var App = React.createClass({
         return <div className="app">
             <PageHeader logged_in={this.state.loggedIn} token={this.state.token}/>
             <main>
+                <div className="content">
                 {this.props.children && React.cloneElement(this.props.children, {
                   loggedIn: this.state.loggedIn,
                   token: this.state.token
                 })}
+                </div>
             </main>
             <PageFooter/>
             </div>

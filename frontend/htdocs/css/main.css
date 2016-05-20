@@ -1,18 +1,49 @@
+/* Layout */
 body {
     width: 100%;
+    height: 100%;
+    background-color: red;
 }
 
-div.app > main {
+/* Header & Navigation */
+div.app > header {
+    background-color: teal;
+    height: 50px;
+}
+
+header .siteTitle,
+nav.site {
+    float: left;
+}
+
+nav.user {
+    float: right;
+}
+
+nav, header .siteTitle {
+    position: relative;
+    display: inline-block;
+    top: 50%;
+    transform: translateY(-50%);
+    transform-style: preserve-3d;
+}
+
+/* Footer */
+div.app > footer {
+    background-color: white;
+    height: 50px;
+}
+
+/* Main content css */
+div.app > main > .content {
     width: 80%;
     margin-left: auto;
     margin-right: auto;
+    background-color: white;
+    height: 100%;
 }
 
-div.app > header {
-    width: 100%;
-    background-color: teal;
-}
-
-div.app > footer {
-    width: 100%;
+/* Helpers */
+div.clear {
+    clear: both;
 }

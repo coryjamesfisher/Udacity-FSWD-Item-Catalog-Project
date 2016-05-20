@@ -25,5 +25,27 @@ module.exports = {
 				}
 			}
 		);
+	},
+
+	logout: function() {
+
+		AppDispatcher.dispatch({
+			actionType: "LOGOUT_COMPLETE"
+		})
+	},
+
+	thirdPartyAuth: function(provider) {
+
+		switch(provider) {
+			case "google":
+			default:
+				document.location = "https://accounts.google.com/o/oauth2/auth?" +
+            		"scope=profile email" +
+            		"&redirect_uri=" + encodeURIComponent("http://localhost:8000/sso?provider=google") +
+            		"&response_type=code" +
+            		"&client_id=1099338626741-0qbg100alipuei46fhc3vemsgn6nh491.apps.googleusercontent.com";
+		}
+
+		throw "Invalid 3rd party auth provider";
 	}
 };
