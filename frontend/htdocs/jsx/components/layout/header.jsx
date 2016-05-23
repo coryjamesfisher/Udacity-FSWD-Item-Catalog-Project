@@ -1,4 +1,5 @@
 var AuthenticationActions = require('../../actions/AuthenticationActions.jsx');
+var Link = require('react-router').Link;
 
 module.exports = React.createClass({
 
@@ -23,8 +24,8 @@ module.exports = React.createClass({
         }
 
 		return <header>
-            <span className="siteTitle">Catalog This</span>
-            <nav className="site">Catalog</nav>
+            <span className="siteTitle">Catalog This!</span>
+            <nav className="site"><Link to="/">Home</Link><Link to="/list-categories">All Categories</Link></nav>
             <nav className="user">{loginTextArea}</nav>
             <div className="clear"></div>
 		</header>

@@ -25,7 +25,7 @@ AppDispatcher.register(function(action) {
         case "LOGIN_COMPLETE":
 
             if (action.token && action.token.length > 0) {
-                _loggedIn = action.loggedIn;
+                _loggedIn = true;
                 _token = action.token;
             }
 

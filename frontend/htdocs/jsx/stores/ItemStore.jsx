@@ -4,11 +4,30 @@ var assign = require('object-assign');
 
 var CHANGE_EVENT = 'change';
 
-var _recentItems = [];
+var _items = [];
 
-var RecentItemStore = assign({}, EventEmitter.prototype, {
+var ItemStore = assign({}, EventEmitter.prototype, {
 
-    getRecentItems: function() { return _recentItems; },
+    getItems: function(categoryId) {
+
+        if (typeof categoryId == 'undefined' || !categoryId) {
+            return _items;
+        }
+
+        var results = [];
+
+        for (var i = 0; i < _items.length; i++) {
+
+            for (var j = 0; j < _items[i].categories.length; j++) {
+                if (_items[i].categories[j] == categoryId) {
+                    results.push(_items[i]);
+                    break;
+                }
+            }
+        }
+
+        return results;
+    },
 
     emitChange: function() { this.emit(CHANGE_EVENT); },
     addChangeListener: function(callback) { this.on(CHANGE_EVENT, callback); },
@@ -20,12 +39,13 @@ AppDispatcher.register(function(action) {
 
     switch(action.actionType) {
         case "RECENT_ITEMS_LOAD_COMPLETE":
+        case "CATEGORY_ITEMS_LOAD_COMPLETE":
 
             if (action.items && action.items.length > 0) {
-                _recentItems = action.items
+                _items = action.items
             }
 
-            RecentItemStore.emitChange();
+            ItemStore.emitChange();
             break;
 
         default:
@@ -33,4 +53,4 @@ AppDispatcher.register(function(action) {
     }
 });
 
-module.exports = RecentItemStore;
+module.exports = ItemStore;

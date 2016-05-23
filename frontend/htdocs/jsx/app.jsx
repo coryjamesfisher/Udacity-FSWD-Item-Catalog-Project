@@ -72,7 +72,7 @@ ReactDOM.render(
             <Route path="/item/edit" component={ItemEditPage}/>
             <Route path="/item/view" component={ItemViewPage}/>
             <Route path="/category/edit" component={CategoryEditPage}/>
-            <Route path="/category/list-items" component={CategoryItemListPage}/>
+            <Route path="/category/:categoryId/list-items" component={CategoryItemListPage}/>
         </Route>
     </Router>,
     document.getElementById('application')

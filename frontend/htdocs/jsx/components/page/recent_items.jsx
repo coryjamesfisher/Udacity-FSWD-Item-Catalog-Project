@@ -1,5 +1,5 @@
 var ItemActions = require('../../actions/ItemActions.jsx');
-var RecentItemStore = require('../../stores/RecentItemStore.jsx');
+var ItemStore = require('../../stores/ItemStore.jsx');
 
 module.exports = React.createClass({
 
@@ -12,10 +12,10 @@ module.exports = React.createClass({
 
 	componentDidMount: function() {
 
-		RecentItemStore.addChangeListener(this._onChange);
+		ItemStore.addChangeListener(this._onChange);
 
 		if (this.props.loggedIn) {
-			ItemActions.loadRecent(this.props.token);
+			ItemActions.loadItems(this.props.token);
 		}
 
 		return {}
@@ -24,14 +24,14 @@ module.exports = React.createClass({
 	fetchState: function() {
 
 		return {
-			items: RecentItemStore.getRecentItems()
+			items: ItemStore.getItems()
 		}
 	},
 
 	componentWillUpdate: function() {
 
 		if (this.state.items.length == 0) {
-			ItemActions.loadRecent(this.props.token);
+			ItemActions.loadItems(this.props.token);
 		}
 	},
 
