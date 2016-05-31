@@ -2,7 +2,7 @@ var AppDispatcher = require('../dispatcher/AppDispatcher.jsx');
 
 module.exports = {
 
-	loadItems: function(token, categoryId) {
+	loadItems: function(token, categoryId, itemId) {
 
 		var url = 'http://localhost:8080/rest/v1/',
 			eventToDispatch = '_ITEMS_LOAD_COMPLETE';
@@ -10,7 +10,11 @@ module.exports = {
 		if (categoryId) {
 			url += 'items/category/' + categoryId;
 			eventToDispatch = 'CATEGORY' + eventToDispatch;
-		} else {
+		} else if (itemId) {
+			url += 'items/' + itemId;
+			eventToDispatch = 'ITEM_LOAD_COMPLETE';
+		}
+		else {
 			url += 'items';
 			eventToDispatch = 'RECENT' + eventToDispatch;
 		}

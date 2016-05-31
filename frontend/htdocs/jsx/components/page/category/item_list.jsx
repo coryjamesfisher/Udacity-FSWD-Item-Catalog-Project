@@ -2,6 +2,7 @@ var CategoryActions = require('../../../actions/CategoryActions.jsx');
 var ItemActions = require('../../../actions/ItemActions.jsx');
 var CategoryStore = require('../../../stores/CategoryStore.jsx');
 var ItemStore = require('../../../stores/ItemStore.jsx');
+var Link = require('react-router').Link;
 
 module.exports = React.createClass({
 
@@ -18,7 +19,6 @@ module.exports = React.createClass({
 		CategoryStore.addChangeListener(this._onChange);
 		ItemStore.addChangeListener(this._onChange);
         let { categoryId } = this.props.params;
-        console.log('category id mounted: ' + categoryId);
 
 		if (this.props.loggedIn) {
             CategoryActions.loadCategory(this.props.token, categoryId);
@@ -60,7 +60,8 @@ module.exports = React.createClass({
 		return <div>
 			Category - {category.name}
 			{items.map(function(result) {
-				return <div>{result.code} - {result.name} {result.price}</div>
+				var _link = "/item/" + result.id + "/view";
+				return <div><Link to={_link}>{result.code} - {result.name} {result.price}</Link></div>
 			})}
 		</div>
 	}

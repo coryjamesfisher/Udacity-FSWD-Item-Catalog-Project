@@ -24,10 +24,13 @@ module.exports = React.createClass({
         }
 
 		return <header>
-            <span className="siteTitle">Catalog This!</span>
-            <nav className="site"><Link to="/">Home</Link><Link to="/list-categories">All Categories</Link></nav>
-            <nav className="user">{loginTextArea}</nav>
-            <div className="clear"></div>
+
+            <div className="header-item-container">
+                <span className="siteTitle">Catalog This!</span>
+                <nav className="site"><Link to="/">Home</Link><Link to="/list-categories">All Categories</Link></nav>
+                <nav className="user">{loginTextArea}</nav>
+                <div className="clear"></div>
+            </div>
 		</header>
 	}
 });

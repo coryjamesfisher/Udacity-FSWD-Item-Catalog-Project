@@ -8,9 +8,15 @@ var _items = [];
 
 var ItemStore = assign({}, EventEmitter.prototype, {
 
-    getItems: function(categoryId) {
+    getItems: function(categoryId, itemId) {
 
-        if (typeof categoryId == 'undefined' || !categoryId) {
+        if (
+            // Get items for category
+            (typeof categoryId == 'undefined' || !categoryId)
+            &&
+            // Get single item
+            (typeof itemId == 'undefined' || !itemId)
+        ) {
             return _items;
         }
 
@@ -18,11 +24,18 @@ var ItemStore = assign({}, EventEmitter.prototype, {
 
         for (var i = 0; i < _items.length; i++) {
 
-            for (var j = 0; j < _items[i].categories.length; j++) {
-                if (_items[i].categories[j] == categoryId) {
-                    results.push(_items[i]);
-                    break;
+            // Category Id: multi-item match
+            if (categoryId) {
+                for (var j = 0; j < _items[i].categories.length; j++) {
+                    if (_items[i].categories[j] == categoryId) {
+                        results.push(_items[i]);
+                        break;
+                    }
                 }
+            }
+            // Item Id: single-item match
+            else if (itemId && _items[i].id == itemId) {
+                return _items[i];
             }
         }
 
@@ -45,6 +58,14 @@ AppDispatcher.register(function(action) {
                 _items = action.items
             }
 
+            ItemStore.emitChange();
+            break;
+        case "ITEM_LOAD_COMPLETE":
+
+            // Items is actually a singular item in this case.
+            if (action.items) {
+                _items.push(action.items);
+            }
             ItemStore.emitChange();
             break;
 
