@@ -6,22 +6,19 @@ module.exports = React.createClass({
 
 	getInitialState: function() {
 
-		return {
-			items: []
-		}
+		return this.fetchState();
 	},
 
 	componentDidMount: function() {
 
 		CategoryStore.addChangeListener(this._onChange);
-
-        console.log(this.props);
-		if (this.props.loggedIn) {
-            console.log('loading');
-			CategoryActions.loadAllCategories(this.props.token);
-		}
+		this.getDataIfNeeded();
 
 		return {}
+	},
+
+	componentWillUnmount: function() {
+		CategoryStore.removeChangeListener(this._onChange);
 	},
 
 	fetchState: function() {
@@ -31,11 +28,16 @@ module.exports = React.createClass({
 		}
 	},
 
-	componentWillUpdate: function() {
+	getDataIfNeeded: function (props) {
 
-		if (this.state.items.length == 0) {
+		if (typeof props === 'undefined' || props != this.props) {
 			CategoryActions.loadAllCategories(this.props.token);
 		}
+	},
+
+	componentWillReceiveProps: function(nextProps) {
+
+		this.getDataIfNeeded(nextProps);
 	},
 
     _onChange: function() {
@@ -50,7 +52,7 @@ module.exports = React.createClass({
 			Categories
 			{items.map(function(result) {
                 var _link = "/category/" + result.id + "/list-items";
-				return <div>{result.id} - {result.code} <Link to={_link}>{result.name}</Link></div>
+				return <div key={result.id}>{result.id} - {result.code} <Link to={_link}>{result.name}</Link></div>
 			})}
 
 		</div>

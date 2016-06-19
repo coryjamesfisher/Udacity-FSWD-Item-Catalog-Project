@@ -69,9 +69,7 @@ ReactDOM.render(
             <IndexRoute component={RecentItemsPage}/>
             <Route path="/sso" component={LoginPage}/>
             <Route path="/list-categories" component={CategoryListPage}/>
-            <Route path="/item/edit" component={ItemEditPage}/>
             <Route path="/item/:itemId/view" component={ItemViewPage}/>
-            <Route path="/category/edit" component={CategoryEditPage}/>
             <Route path="/category/:categoryId/list-items" component={CategoryItemListPage}/>
         </Route>
     </Router>,

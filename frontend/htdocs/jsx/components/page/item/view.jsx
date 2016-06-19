@@ -6,24 +6,21 @@ module.exports = React.createClass({
 
 	getInitialState: function() {
 
-		return {
-            item: null
-        }
-
+		return this.fetchState();
 	},
 
 	componentDidMount: function() {
 
 		ItemStore.addChangeListener(this._onChange);
-        let { itemId } = this.props.params;
-
-		if (this.props.loggedIn) {
-			ItemActions.loadItems(this.props.token, null, itemId);
-		}
+		this.getDataIfNeeded();
 
 		return {}
 	},
 
+	componentWillUnmount: function() {
+		ItemStore.removeChangeListener(this._onChange);
+	},
+	
 	fetchState: function() {
 
         let { itemId } = this.props.params;
@@ -33,11 +30,15 @@ module.exports = React.createClass({
 		}
 	},
 
-	componentWillUpdate: function() {
+	componentWillReceiveProps: function(nextProps) {
+		this.getDataIfNeeded(nextProps);
+	},
 
-        let { itemId } = this.props.params;
+	getDataIfNeeded: function (props) {
 
-		if (this.state.item == null) {
+		let { itemId } = typeof props !== 'undefined' ? props.params : this.props.params;
+
+		if (typeof props === 'undefined' || props != this.props) {
 			ItemActions.loadItems(this.props.token, null, itemId);
 		}
 	},

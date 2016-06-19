@@ -5,20 +5,19 @@ module.exports = React.createClass({
 
 	getInitialState: function() {
 
-		return {
-			items: []
-		}
+		return this.fetchState();
 	},
 
 	componentDidMount: function() {
 
 		ItemStore.addChangeListener(this._onChange);
-
-		if (this.props.loggedIn) {
-			ItemActions.loadItems(this.props.token);
-		}
+		this.getDataIfNeeded();
 
 		return {}
+	},
+
+	componentWillUnmount: function() {
+		ItemStore.removeChangeListener(this._onChange);
 	},
 
 	fetchState: function() {
@@ -28,9 +27,13 @@ module.exports = React.createClass({
 		}
 	},
 
-	componentWillUpdate: function() {
+	componentWillReceiveProps: function(nextProps) {
+		this.getDataIfNeeded(nextProps)
+	},
 
-		if (this.state.items.length == 0) {
+	getDataIfNeeded: function (props) {
+
+		if (typeof props === 'undefined' || props != this.props) {
 			ItemActions.loadItems(this.props.token);
 		}
 	},
@@ -46,7 +49,7 @@ module.exports = React.createClass({
 		return <div>
 			recent items list
 			{items.map(function(result) {
-				return <div>{result.code} - {result.name} {result.price}</div>
+				return <div key={result.id}>{result.code} - {result.name} {result.price}</div>
 			})}
 
 		</div>

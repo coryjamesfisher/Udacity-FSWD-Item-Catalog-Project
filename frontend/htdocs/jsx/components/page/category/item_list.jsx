@@ -18,14 +18,15 @@ module.exports = React.createClass({
 
 		CategoryStore.addChangeListener(this._onChange);
 		ItemStore.addChangeListener(this._onChange);
-        let { categoryId } = this.props.params;
 
-		if (this.props.loggedIn) {
-            CategoryActions.loadCategory(this.props.token, categoryId);
-			ItemActions.loadItems(this.props.token, categoryId);
-		}
+		this.getDataIfNeeded();
 
 		return {}
+	},
+
+	componentWillUnmount: function() {
+		CategoryStore.removeChangeListener(this._onChange);
+		ItemStore.removeChangeListener(this._onChange);
 	},
 
 	fetchState: function() {
@@ -38,11 +39,15 @@ module.exports = React.createClass({
 		}
 	},
 
-	componentWillUpdate: function() {
+	componentWillReceiveProps: function(nextProps) {
+		this.getDataIfNeeded(nextProps);
+	},
 
-        let { categoryId } = this.props.params;
+	getDataIfNeeded: function (props) {
 
-		if (this.state.items.length == 0) {
+		let { categoryId } = typeof props !== 'undefined' ? props.params : this.props.params;
+
+		if (typeof props === 'undefined' || props != this.props) {
             CategoryActions.loadCategory(this.props.token, categoryId);
 			ItemActions.loadItems(this.props.token, categoryId);
 		}
@@ -61,7 +66,7 @@ module.exports = React.createClass({
 			Category - {category.name}
 			{items.map(function(result) {
 				var _link = "/item/" + result.id + "/view";
-				return <div><Link to={_link}>{result.code} - {result.name} {result.price}</Link></div>
+				return <div key={result.id}><Link to={_link}>{result.code} - {result.name} {result.price}</Link></div>
 			})}
 		</div>
 	}
