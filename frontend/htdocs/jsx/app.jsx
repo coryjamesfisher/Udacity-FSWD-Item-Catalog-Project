@@ -71,6 +71,7 @@ ReactDOM.render(
             <Route path="/list-categories" component={CategoryListPage}/>
             <Route path="/item/:itemId/view" component={ItemViewPage}/>
             <Route path="/category/:categoryId/list-items" component={CategoryItemListPage}/>
+            <Route path="/category/create" component={CategoryEditPage}/>
         </Route>
     </Router>,
     document.getElementById('application')

@@ -24,21 +24,23 @@ module.exports = {
 				url: url,
 				method: "GET",
 				contentType: "application/json",
-				headers: {
-					'Authorization': 'Bearer ' + token
-				},
 				error: function(error) {
-					console.log(error);
+					AppDispatcher.dispatch({
+						actionType: "ERROR",
+						message: "Failed to load items"
+					});
+
 				}.bind(this),
 
 				success: function (result) {
 
-                    AppDispatcher.dispatch({
-                        actionType: eventToDispatch,
-                        items: JSON.parse(result)
-                    });
+					AppDispatcher.dispatch({
+						actionType: eventToDispatch,
+						items: JSON.parse(result)
+					});
 				}
 			}
 		);
+		console.log('request away');
 	}
 };

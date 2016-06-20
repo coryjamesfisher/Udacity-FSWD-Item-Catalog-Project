@@ -21,7 +21,7 @@ module.exports = React.createClass({
             loginTextArea = <button onClick={this.onLoginClicked}>Login</button>
         } else {
             loginTextArea = <button onClick={this.onLogoutClicked}>Logout</button>
-            addCategoryLink = <Link to="/category/add">+</Link>
+            addCategoryLink = <Link to="/category/create">+</Link>
         }
 
 		return <header>

@@ -58,6 +58,15 @@ AppDispatcher.register(function(action) {
             CategoryStore.emitChange();
             break;
 
+        case "CATEGORY_CREATE_COMPLETE":
+
+            if (action.item && action.item.length > 0) {
+                _categories.push(action.item);
+            }
+
+            CategoryStore.emitChange();
+            break;
+
         default:
         // no op
     }

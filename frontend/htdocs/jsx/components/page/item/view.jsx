@@ -20,7 +20,7 @@ module.exports = React.createClass({
 	componentWillUnmount: function() {
 		ItemStore.removeChangeListener(this._onChange);
 	},
-	
+
 	fetchState: function() {
 
         let { itemId } = this.props.params;
@@ -55,8 +55,14 @@ module.exports = React.createClass({
             return <div></div>
         }
 
-		return <div>
-            {item.name} <input type="button" value="Edit"/>
+		var buttons = "";
+
+		if (this.props.loggedIn === true) {
+			buttons = <input type="button" value="Edit"/>
+		}
+
+		return <div key={item.id}>
+            {item.name} {buttons}
 		</div>
 	}
 });
