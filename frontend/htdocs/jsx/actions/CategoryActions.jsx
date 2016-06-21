@@ -63,7 +63,7 @@ module.exports = {
 					"name": name
 				}),
 				error: function(error) {
-					alert("ERROR");
+
 					AppDispatcher.dispatch({
 						actionType: "ERROR",
 						message: "Failed to create category."
@@ -76,6 +76,8 @@ module.exports = {
 						actionType: "CATEGORY_CREATE_COMPLETE",
 						item: JSON.parse(result)
 					});
+
+					onSuccess();
 				}
 			}
 		)

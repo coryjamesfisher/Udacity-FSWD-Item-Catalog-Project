@@ -1,6 +1,7 @@
 var CategoryStore = require('../../../stores/CategoryStore.jsx');
 var AppStore = require('../../../stores/AppStore.jsx');
 var CategoryActions = require('../../../actions/CategoryActions.jsx');
+var AppActions = require('../../../actions/AppActions.jsx');
 var findDOMNode = require('react-dom').findDOMNode;
 var browserHistory = require('react-router').browserHistory
 
@@ -23,6 +24,7 @@ module.exports = React.createClass({
 	componentWillUnmount: function() {
 		CategoryStore.removeChangeListener(this._onChange);
 		AppStore.removeChangeListener(this._onChange);
+        AppActions.clearErrors();
 	},
 
 	fetchState: function() {
