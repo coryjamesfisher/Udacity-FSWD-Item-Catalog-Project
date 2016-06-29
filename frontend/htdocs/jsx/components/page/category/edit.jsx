@@ -3,7 +3,7 @@ var AppStore = require('../../../stores/AppStore.jsx');
 var CategoryActions = require('../../../actions/CategoryActions.jsx');
 var AppActions = require('../../../actions/AppActions.jsx');
 var findDOMNode = require('react-dom').findDOMNode;
-var browserHistory = require('react-router').browserHistory
+var browserHistory = require('react-router').browserHistory;
 
 module.exports = React.createClass({
 
@@ -77,7 +77,6 @@ module.exports = React.createClass({
 
     saveCategory: function(event) {
         event.preventDefault();
-
         CategoryActions.createCategory(this.props.token, findDOMNode(this.refs.category_code).value, findDOMNode(this.refs.category_name).value, this.onCreateSuccess);
     },
 

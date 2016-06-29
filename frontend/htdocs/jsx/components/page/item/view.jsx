@@ -1,16 +1,15 @@
 var ItemActions = require('../../../actions/ItemActions.jsx');
 var ItemStore = require('../../../stores/ItemStore.jsx');
 var Link = require('react-router').Link;
+var browserHistory = require('react-router').browserHistory;
 
 module.exports = React.createClass({
 
 	getInitialState: function() {
-
 		return this.fetchState();
 	},
 
 	componentDidMount: function() {
-
 		ItemStore.addChangeListener(this._onChange);
 		this.getDataIfNeeded();
 
@@ -26,7 +25,7 @@ module.exports = React.createClass({
         let { itemId } = this.props.params;
 
 		return {
-			item: ItemStore.getItems(null, itemId)
+			item: ItemStore.getItems(null, itemId)[0]
 		}
 	},
 
@@ -47,6 +46,11 @@ module.exports = React.createClass({
         this.setState(this.fetchState());
     },
 
+
+	editItem: function() {
+		browserHistory.push('/item/' + this.state.item.id + '/edit');
+	},
+
 	render: function() {
 
 		var item = this.state.item;
@@ -58,7 +62,7 @@ module.exports = React.createClass({
 		var buttons = "";
 
 		if (this.props.loggedIn === true) {
-			buttons = <input type="button" value="Edit"/>
+			buttons = <input type="button" value="Edit" onClick={this.editItem}/>
 		}
 
 		return <div key={item.id}>

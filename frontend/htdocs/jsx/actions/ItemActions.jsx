@@ -41,6 +41,41 @@ module.exports = {
 				}
 			}
 		);
-		console.log('request away');
+	},
+
+	createItem: function(token, id, code, name, price, onSuccess) {
+
+		$.ajax(
+			{
+				url: "http://localhost:8080/rest/v1/items",
+				method: "POST",
+				contentType: "application/json",
+				data: JSON.stringify({
+					"code": code,
+					"name": name,
+					"price": price,
+					"categories": [1]
+				}),
+				error: function(error) {
+
+					AppDispatcher.dispatch({
+						actionType: "ERROR",
+						message: "Failed to create item."
+					});
+				}.bind(this),
+
+				success: function (result) {
+
+					var item = JSON.parse(result);
+
+					AppDispatcher.dispatch({
+						actionType: "ITEM_CREATE_COMPLETE",
+						item: item
+					});
+
+					onSuccess(item.id);
+				}
+			}
+		)
 	}
 };

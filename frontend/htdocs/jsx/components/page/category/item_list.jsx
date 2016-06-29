@@ -63,9 +63,6 @@ module.exports = React.createClass({
             items = this.state.items;
 
 		var mode = this.props.params;
-		console.log("START");
-		console.log(mode);
-		console.log("END");
 
 		return <div>
 			Category - {category.name}

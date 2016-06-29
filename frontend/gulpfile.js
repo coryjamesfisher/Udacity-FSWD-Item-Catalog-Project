@@ -16,5 +16,5 @@ gulp.task('js', function() {
 });
 
 gulp.task('watch', function() {
-	gulp.watch('htdocs/jsx/*.jsx', ['js']);
+	gulp.watch('htdocs/jsx/**/*.jsx', ['js']);
 });
