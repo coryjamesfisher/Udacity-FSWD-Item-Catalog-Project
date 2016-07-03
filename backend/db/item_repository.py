@@ -19,6 +19,18 @@ class item_repository:
 
         return item
 
+    def update(self, item):
+        cur = self.conn.cursor()
+        cur.execute("""UPDATE items SET code=%s, name=%s, price=%s WHERE id=%s""", (item.code, item.name, item.price, item.id))
+        cur.execute("""DELETE FROM item_categories where item_id=%s""", (item.id,))
+        for category_id in item.categories:
+            cur.execute("""INSERT INTO item_categories(item_id, category_id) VALUES(%s, %s)""", (item.id, category_id))
+
+        cur.close()
+        self.conn.commit()
+
+        return item
+
     def get_by_id(self, id):
         cur = self.conn.cursor()
         cur.execute("""SELECT i.id, i.code, i.name, i.price, i.created_on, array_to_string(array_agg(c.id), ',') as categories

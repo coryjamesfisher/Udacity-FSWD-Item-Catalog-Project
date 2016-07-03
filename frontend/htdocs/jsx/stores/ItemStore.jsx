@@ -55,6 +55,7 @@ AppDispatcher.register(function(action) {
 
             ItemStore.emitChange();
             break;
+
         case "ITEM_LOAD_COMPLETE":
 
             // Items is actually a singular item in this case.

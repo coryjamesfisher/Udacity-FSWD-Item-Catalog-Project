@@ -3,6 +3,7 @@ var ItemActions = require('../../../actions/ItemActions.jsx');
 var CategoryStore = require('../../../stores/CategoryStore.jsx');
 var ItemStore = require('../../../stores/ItemStore.jsx');
 var Link = require('react-router').Link;
+var browserHistory = require('react-router').browserHistory;
 
 module.exports = React.createClass({
 
@@ -57,6 +58,10 @@ module.exports = React.createClass({
         this.setState(this.fetchState());
     },
 
+	addButtonClicked: function() {
+        browserHistory.push('/item/create');
+	},
+
 	render: function() {
 
 		var category = this.state.category,
@@ -64,12 +69,18 @@ module.exports = React.createClass({
 
 		var mode = this.props.params;
 
+		var addButton = "";
+		if (this.props.loggedIn == true) {
+			addButton = <div><button onClick={this.addButtonClicked}>Add Item</button></div>
+		}
+
 		return <div>
 			Category - {category.name}
 			{items.map(function(result) {
 				var _link = "/item/" + result.id + "/view";
 				return <div key={result.id}><Link to={_link}>{result.code} - {result.name} {result.price}</Link></div>
 			})}
+			{addButton}
 		</div>
 	}
 });

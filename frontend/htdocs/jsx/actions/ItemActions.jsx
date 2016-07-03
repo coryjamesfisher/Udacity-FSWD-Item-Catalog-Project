@@ -43,7 +43,44 @@ module.exports = {
 		);
 	},
 
-	createItem: function(token, id, code, name, price, onSuccess) {
+	updateItem: function(token, item, onSuccess) {
+
+		$.ajax(
+			{
+				url: "http://localhost:8080/rest/v1/items/" + item.id,
+				method: "PUT",
+				contentType: "application/json",
+				data: JSON.stringify({
+					"id": item.id,
+					"code": item.code,
+					"name": item.name,
+					"price": item.price,
+					"categories": [1]
+				}),
+				error: function(error) {
+
+					AppDispatcher.dispatch({
+						actionType: "ERROR",
+						message: "Failed to create item."
+					});
+				}.bind(this),
+
+				success: function (result) {
+
+					var item = JSON.parse(result);
+
+					AppDispatcher.dispatch({
+						actionType: "ITEM_UPDATE_COMPLETE",
+						item: item
+					});
+
+					onSuccess(item.id);
+				}
+			}
+		)
+	},
+
+	createItem: function(token, item, onSuccess) {
 
 		$.ajax(
 			{
@@ -51,9 +88,9 @@ module.exports = {
 				method: "POST",
 				contentType: "application/json",
 				data: JSON.stringify({
-					"code": code,
-					"name": name,
-					"price": price,
+					"code": item.code,
+					"name": item.name,
+					"price": item.price,
 					"categories": [1]
 				}),
 				error: function(error) {
