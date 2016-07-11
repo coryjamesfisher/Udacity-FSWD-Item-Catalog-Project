@@ -91,7 +91,7 @@ module.exports = {
 					"code": item.code,
 					"name": item.name,
 					"price": item.price,
-					"categories": [1]
+					"categories": item.categories
 				}),
 				error: function(error) {
 

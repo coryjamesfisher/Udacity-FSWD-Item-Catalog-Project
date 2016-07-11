@@ -59,7 +59,7 @@ module.exports = React.createClass({
     },
 
 	addButtonClicked: function() {
-        browserHistory.push('/item/create');
+        browserHistory.push('/item/create?category=' + this.state.category.id);
 	},
 
 	render: function() {

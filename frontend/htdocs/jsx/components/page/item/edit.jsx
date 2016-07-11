@@ -109,6 +109,9 @@ module.exports = React.createClass({
             return;
         }
 
+        // Add the category to the item state.
+        this.state.item.categories.push(this.props.location.query.category);
+
         ItemActions.createItem(
             this.props.token,
             this.state.item,
@@ -125,8 +128,10 @@ module.exports = React.createClass({
 
     render: function() {
 
-        console.log('rendering');
-        console.dir(this.state.item);
+        //console.log('rendering');
+        //console.dir(this.state.item);
+
+        //console.dir(this);
 
         return <form onSubmit={this.saveItem}>
             <p>

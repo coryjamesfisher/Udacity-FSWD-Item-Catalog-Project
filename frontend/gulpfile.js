@@ -15,6 +15,6 @@ gulp.task('js', function() {
 	return bundler.bundle().pipe(source('app.js')).pipe(gulp.dest('./htdocs/js/'));
 });
 
-gulp.task('watch', function() {
+gulp.task('watch', ['js'], function() {
 	gulp.watch('htdocs/jsx/**/*.jsx', ['js']);
 });
