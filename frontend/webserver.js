@@ -1,3 +1,5 @@
+#!/usr/bin/nodejs
+
 var http = require("http"),
   url = require("url"),
   fs = require("fs");

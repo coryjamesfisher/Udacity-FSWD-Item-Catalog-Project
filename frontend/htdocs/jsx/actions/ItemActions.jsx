@@ -43,7 +43,12 @@ module.exports = {
 		);
 	},
 
-	updateItem: function(token, item, onSuccess) {
+	updateItem: function(token, item) {
+
+		AppDispatcher.dispatch({
+			actionType: "ITEM_UPDATING",
+			item: item
+		});
 
 		$.ajax(
 			{
@@ -73,14 +78,18 @@ module.exports = {
 						actionType: "ITEM_UPDATE_COMPLETE",
 						item: item
 					});
-
-					onSuccess(item.id);
 				}
 			}
 		)
 	},
 
-	createItem: function(token, item, onSuccess) {
+	editingItem: function() {
+		AppDispatcher.dispatch({
+			actionType: "ITEM_EDITING"
+		});
+	},
+
+	createItem: function(token, item) {
 
 		$.ajax(
 			{
@@ -109,8 +118,6 @@ module.exports = {
 						actionType: "ITEM_CREATE_COMPLETE",
 						item: item
 					});
-
-					onSuccess(item.id);
 				}
 			}
 		)

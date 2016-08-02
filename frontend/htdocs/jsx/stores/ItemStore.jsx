@@ -5,6 +5,7 @@ var assign = require('object-assign');
 var CHANGE_EVENT = 'change';
 
 var _items = [];
+var _currentItemStatus = 'editing';
 
 var ItemStore = assign({}, EventEmitter.prototype, {
 
@@ -34,6 +35,26 @@ var ItemStore = assign({}, EventEmitter.prototype, {
         return !_items.some(function(nextItem) {
             return item.id == nextItem.id;
         });
+    },
+
+    getCurrentItemStatus: function() {
+        return _currentItemStatus;
+    },
+
+    editing: function() {
+        _currentItemStatus = 'editing';
+    },
+
+    saving: function() {
+        _currentItemStatus = 'saving';
+    },
+
+    saved: function() {
+        _currentItemStatus = 'saved';
+    },
+
+    failed: function() {
+        _currentItemStatus = 'failed';
     },
 
     emitChange: function() { this.emit(CHANGE_EVENT); },
@@ -66,6 +87,43 @@ AppDispatcher.register(function(action) {
                 }
             }
 
+            ItemStore.emitChange();
+            break;
+
+        case "ITEM_CREATE_COMPLETE":
+
+            console.log('item create complete');
+            if (action.item) {
+                _items.push(action.item);
+            }
+            console.dir(_items);
+
+            ItemStore.emitChange();
+            break;
+
+        case "ITEM_EDITING":
+            ItemStore.editing();
+            break;
+
+        case "ITEM_UPDATING":
+            ItemStore.saving();
+            break;
+
+        case "ITEM_UPDATE_FAILED":
+            ItemStore.failed();
+            break;
+
+        case "ITEM_UPDATE_COMPLETE":
+            if (action.item) {
+
+                _items.forEach(function(_item, index){
+                    if (action.item.id == _item.id) {
+                       _items[index] = action.item;
+                    }
+                });
+            }
+
+            ItemStore.saved();
             ItemStore.emitChange();
             break;
 

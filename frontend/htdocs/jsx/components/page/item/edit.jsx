@@ -19,6 +19,7 @@ module.exports = React.createClass({
                     "price": "",
                     "categories": []
                 },
+                "status": ItemStore.getCurrentItemStatus(),
                 error_message: AppStore.getError()
         };
 	},
@@ -27,6 +28,7 @@ module.exports = React.createClass({
 		ItemStore.addChangeListener(this._onChange);
 		AppStore.addChangeListener(this._onChange);
 		this.getDataIfNeeded(this.props);
+        ItemStore.editing();
 
 		return {}
 	},
@@ -39,7 +41,7 @@ module.exports = React.createClass({
 
 	fetchState: function() {
 
-        var itemId = this.props.params.itemId || null;
+        var itemId = this.props.params.itemId || this.state.item.id || null;
 
         if (itemId === null || typeof itemId == 'undefined') {
             return {
@@ -48,21 +50,22 @@ module.exports = React.createClass({
                     "code": "",
                     "name": "",
                     "price": "",
-                    "categories": []
+                    "categories": [],
                 },
+                "status": ItemStore.getCurrentItemStatus(),
                 error_message: AppStore.getError()
             }
         }
 
-        console.dir(ItemStore.getItems(null, itemId)[0]);
+        var item = ItemStore.getItems(null, itemId)[0];
 		return {
-			item: ItemStore.getItems(null, itemId)[0],
+			item: item,
+            status: ItemStore.getCurrentItemStatus(),
             error_message: AppStore.getError()
 		}
 	},
 
 	componentWillReceiveProps: function(nextProps) {
-        console.log('component will receive props');
 		this.getDataIfNeeded(nextProps);
 	},
 
@@ -75,12 +78,8 @@ module.exports = React.createClass({
         }
 
 		if (itemId !== null) {
-
-            console.log('load item id:' + itemId);
             ItemActions.loadItems(this.props.token, null, itemId);
 		} else {
-
-            console.log('item null forcing change');
             // Force a change to clear any existing values.
             // This is a new item
             this._onChange();
@@ -89,12 +88,16 @@ module.exports = React.createClass({
 
     _onChange: function() {
         this.setState(this.fetchState());
+
+        var self = this;
+        setTimeout(function() {
+            if (self.state.status == "saved") {
+                browserHistory.push('/item/' + self.state.item.id + '/view');
+            }
+        }, 1);
     },
 
-    onCreateSuccess: function(item_id) {
-        browserHistory.push('/item/' + item.id + '/view');
-    },
-
+    // Calls AC update/save method
     saveItem: function(event) {
         event.preventDefault();
 
@@ -102,8 +105,7 @@ module.exports = React.createClass({
 
             ItemActions.updateItem(
                 this.props.token,
-                this.state.item,
-                this.onCreateSuccess
+                this.state.item
             );
 
             return;
@@ -114,12 +116,12 @@ module.exports = React.createClass({
 
         ItemActions.createItem(
             this.props.token,
-            this.state.item,
-            this.onCreateSuccess
+            this.state.item
         );
 
     },
 
+    // Sets item state for any field
     updateItem: function(e) {
         var itemCopy = JSON.parse(JSON.stringify(this.state.item));
         itemCopy[e.target.getAttribute('data-field')] = e.target.value;
@@ -127,11 +129,6 @@ module.exports = React.createClass({
     },
 
     render: function() {
-
-        //console.log('rendering');
-        //console.dir(this.state.item);
-
-        //console.dir(this);
 
         return <form onSubmit={this.saveItem}>
             <p>
