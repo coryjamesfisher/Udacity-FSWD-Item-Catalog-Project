@@ -41,7 +41,7 @@ module.exports = React.createClass({
 
 	fetchState: function() {
 
-        var itemId = this.props.params.itemId || this.state.item.id || null;
+        var itemId = this.props.params.itemId || this.state.item.id || ItemStore.getLastCreated() || null;
 
         if (itemId === null || typeof itemId == 'undefined') {
             return {
@@ -50,14 +50,16 @@ module.exports = React.createClass({
                     "code": "",
                     "name": "",
                     "price": "",
-                    "categories": [],
+                    "categories": []
                 },
                 "status": ItemStore.getCurrentItemStatus(),
+                "lastCreatedItem": ItemStore.getLastCreated(),
                 error_message: AppStore.getError()
             }
         }
 
         var item = ItemStore.getItems(null, itemId)[0];
+
 		return {
 			item: item,
             status: ItemStore.getCurrentItemStatus(),
@@ -90,11 +92,12 @@ module.exports = React.createClass({
         this.setState(this.fetchState());
 
         var self = this;
-        setTimeout(function() {
-            if (self.state.status == "saved") {
-                browserHistory.push('/item/' + self.state.item.id + '/view');
-            }
-        }, 1);
+
+        if (self.state.status == "saved") {
+            setTimeout(function() {
+                    browserHistory.push('/item/' + self.state.item.id + '/view');
+            }, 1);
+        }
     },
 
     // Calls AC update/save method

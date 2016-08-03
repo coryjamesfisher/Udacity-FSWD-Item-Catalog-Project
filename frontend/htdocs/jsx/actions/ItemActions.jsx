@@ -91,6 +91,11 @@ module.exports = {
 
 	createItem: function(token, item) {
 
+		AppDispatcher.dispatch({
+			actionType: "ITEM_UPDATING",
+			item: item
+		});
+
 		$.ajax(
 			{
 				url: "http://localhost:8080/rest/v1/items",

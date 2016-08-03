@@ -5,7 +5,10 @@ var assign = require('object-assign');
 var CHANGE_EVENT = 'change';
 
 var _items = [];
+
+// @todo add status handling to a super class
 var _currentItemStatus = 'editing';
+var _lastCreatedItem = null;
 
 var ItemStore = assign({}, EventEmitter.prototype, {
 
@@ -57,6 +60,14 @@ var ItemStore = assign({}, EventEmitter.prototype, {
         _currentItemStatus = 'failed';
     },
 
+    lastCreated: function(id) {
+        _lastCreatedItem = id;
+    },
+
+    getLastCreated: function() {
+        return _lastCreatedItem;
+    },
+
     emitChange: function() { this.emit(CHANGE_EVENT); },
     addChangeListener: function(callback) { this.on(CHANGE_EVENT, callback); },
     removeChangeListener: function(callback) { this.removeListener(CHANGE_EVENT, callback); }
@@ -92,12 +103,12 @@ AppDispatcher.register(function(action) {
 
         case "ITEM_CREATE_COMPLETE":
 
-            console.log('item create complete');
             if (action.item) {
                 _items.push(action.item);
             }
-            console.dir(_items);
 
+            ItemStore.lastCreated(action.item.id);
+            ItemStore.saved();
             ItemStore.emitChange();
             break;
 
