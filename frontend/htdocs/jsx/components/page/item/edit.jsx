@@ -4,7 +4,6 @@ var AppStore = require('../../../stores/AppStore.jsx');
 var ItemActions = require('../../../actions/ItemActions.jsx');
 var CategoryActions = require('../../../actions/CategoryActions.jsx');
 var AppActions = require('../../../actions/AppActions.jsx');
-var findDOMNode = require('react-dom').findDOMNode;
 var browserHistory = require('react-router').browserHistory;
 
 module.exports = React.createClass({

@@ -17,7 +17,7 @@ class item_repository:
         cur.close()
         self.conn.commit()
 
-        return item
+        return self.get_by_id(item.id)
 
     def update(self, item):
         cur = self.conn.cursor()
