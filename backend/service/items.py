@@ -1,5 +1,6 @@
 import db.item_repository
 import db.item
+import service.security
 
 class items:
 
@@ -20,5 +21,7 @@ class items:
         return self.item_repository.create(item)
 
     def update_item(self, id, code, name, price, categories):
+        security = service.security.security()
+        security.matchUser(1)
         item = db.item.item(id, code, name, price, None, categories)
         return self.item_repository.update(item)

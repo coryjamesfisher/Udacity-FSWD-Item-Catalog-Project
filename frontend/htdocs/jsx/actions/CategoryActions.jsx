@@ -58,6 +58,7 @@ module.exports = {
 				url: "http://localhost:8080/rest/v1/categories",
 				method: "POST",
 				contentType: "application/json",
+				beforeSend: function(xhr) {xhr.setRequestHeader('Authorization', 'Bearer ' + token);},
 				data: JSON.stringify({
 					"code": code,
 					"name": name
