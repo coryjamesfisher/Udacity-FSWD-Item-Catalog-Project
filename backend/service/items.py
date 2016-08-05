@@ -16,12 +16,18 @@ class items:
     def get_item_by_id(self, id):
         return self.item_repository.get_by_id(id)
 
-    def create_item(self, code, name, price, categories):
-        item = db.item.item(None, code, name, price, None, categories)
+    def create_item(self, code, name, price, created_by, categories):
+        item = db.item.item(None, code, name, price, None, created_by, categories)
         return self.item_repository.create(item)
 
-    def update_item(self, id, code, name, price, categories):
+    def update_item(self, id, code, name, price, categories, user_id):
         security = service.security.security()
-        security.matchUser(1)
-        item = db.item.item(id, code, name, price, None, categories)
+        item = self.item_repository.get_by_id(id)
+        security.matchUser(existingItem.created_by)
+
+        item.code = code
+        item.name = name
+        item.price = price
+        item.categories = categories
+        # item = db.item.item(id, code, name, price, None, categories)
         return self.item_repository.update(item)

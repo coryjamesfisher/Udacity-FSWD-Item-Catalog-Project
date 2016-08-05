@@ -22,7 +22,7 @@ def get_category_by_id(category_id):
 @security.authorized()
 def create_category():
     categoryService = service.categories.categories(conn)
-    return util.rest_format(categoryService.create_category(request.json['code'], request.json['name']))
+    return util.rest_format(categoryService.create_category(request.json['code'], request.json['name'], security.getUserId()))
 
 @categories_rest.route('/rest/v1/categories/<int:category_id>', methods = ['PUT'])
 @security.authorized()

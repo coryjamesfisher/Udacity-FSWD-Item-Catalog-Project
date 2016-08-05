@@ -31,3 +31,8 @@ class security:
 
         if token['sub'] != userId:
             raise Exception('You do not have permission to perform this update.')
+
+    def getUserId(self):
+        token = request.headers.get('Authorization')
+        token = service.auth.auth.parseToken(token)
+        return token['sub']

@@ -12,8 +12,8 @@ class categories:
     def get_category_by_id(self, id):
         return self.category_repository.get_by_id(id)
 
-    def create_category(self, code, name):
-        category = db.category.category(None, code, name)
+    def create_category(self, code, name, created_by):
+        category = db.category.category(None, code, name, created_by)
         return self.category_repository.create(category)
 
     def update_category(self, id, code, name):

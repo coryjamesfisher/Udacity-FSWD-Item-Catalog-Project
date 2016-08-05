@@ -9,7 +9,7 @@ conn = psycopg2.connect("dbname='main' user='serviceuser' password='serviceuser'
 @auth_rest.route('/rest/v1/auth/sso/<string:provider>/auth_or_register', methods = ['POST'])
 def auth_or_register(provider):
     authService = service.auth.auth(conn)
-    token = authService.auth_or_register(request.json['auth_token'], provider)\
+    token = authService.auth_or_register(request.json['auth_token'], provider)
     return '{"token": "' + token + '"}'
 
 @auth_rest.route('/rest/v1/auth/sso/<string:provider>/auth', methods = ['POST'])

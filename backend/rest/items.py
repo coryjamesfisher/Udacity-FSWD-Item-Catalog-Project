@@ -27,7 +27,7 @@ def get_items_by_category(category_id):
 @security.authorized()
 def create_item():
     itemService = service.items.items(conn)
-    return util.rest_format(itemService.create_item(request.json['code'], request.json['name'], request.json['price'], request.json['categories']))
+    return util.rest_format(itemService.create_item(request.json['code'], request.json['name'], request.json['price'], security.getUserId(), request.json['categories']))
 
 @items_rest.route('/rest/v1/items/<int:item_id>', methods = ['PUT'])
 @security.authorized()
