@@ -23,7 +23,7 @@ class items:
     def update_item(self, id, code, name, price, categories, user_id):
         security = service.security.security()
         item = self.item_repository.get_by_id(id)
-        security.matchUser(existingItem.created_by)
+        security.matchUser(item.created_by)
 
         item.code = code
         item.name = name
