@@ -15,4 +15,5 @@ def authenticate(provider):
 @auth_rest.route('/rest/v1/auth/sso/<string:provider>/register', methods = ['POST'])
 def register(provider):
     authService = service.auth.auth(conn)
-    return util.rest_format(authService.register(request.json['auth_token'], provider))
+    token = authService.register(request.json['auth_token'], provider)
+    return '{"token": "' + token + '"}'

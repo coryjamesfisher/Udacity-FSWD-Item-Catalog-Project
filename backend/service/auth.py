@@ -16,7 +16,9 @@ class auth:
 
     def register(self, auth_code, provider):
         provider = self.providerFactory(provider)
-        return provider.register(auth_code)
+        user = provider.register(auth_code)
+	token = auth.generateToken(user)
+	return token
 
     def providerFactory(self, provider):
         if (provider == "google"):
