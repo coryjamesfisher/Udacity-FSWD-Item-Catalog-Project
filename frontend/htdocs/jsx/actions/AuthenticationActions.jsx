@@ -6,7 +6,7 @@ module.exports = {
 
         $.ajax(
 			{
-				url: "http://localhost:8080/rest/v1/auth/sso/" + provider + "/auth",
+				url: "http://localhost:8080/rest/v1/auth/sso/" + provider + "/auth_or_register",
 				method: "POST",
 				data: JSON.stringify({"auth_token": auth_code}),
 				contentType: "application/json",

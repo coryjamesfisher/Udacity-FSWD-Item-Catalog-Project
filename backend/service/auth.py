@@ -7,18 +7,22 @@ class auth:
     def __init__(self, conn):
        self.conn = conn
 
+    def auth_or_register(self, auth_code, provider):
+        provider = self.providerFactory(provider)
+        user = provider.auth_or_register(auth_code)
+        return auth.generateToken(user)
+
     def authenticate(self, auth_code, provider):
         provider = self.providerFactory(provider)
         user = provider.auth(auth_code)
-
         token = auth.generateToken(user)
         return token
 
     def register(self, auth_code, provider):
         provider = self.providerFactory(provider)
         user = provider.register(auth_code)
-	token = auth.generateToken(user)
-	return token
+        token = auth.generateToken(user)
+        return token
 
     def providerFactory(self, provider):
         if (provider == "google"):
@@ -37,6 +41,5 @@ class auth:
 
     @staticmethod
     def parseToken(token):
-
         token = token.replace('Bearer ', '')
         return jwt.decode(token, 'classycoders-secretkey', algorithm='HS256')
