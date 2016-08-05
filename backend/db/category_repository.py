@@ -16,6 +16,12 @@ class category_repository:
 
         return category
 
+    def delete(self, id):
+        cur = self.conn.cursor()
+        cur.execute("""DELETE FROM categories WHERE id = %s""", (id,))
+        cur.close()
+        self.conn.commit()
+
     def get_by_id(self, id):
 
         cur = self.conn.cursor()

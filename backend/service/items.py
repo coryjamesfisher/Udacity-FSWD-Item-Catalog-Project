@@ -1,6 +1,5 @@
 import db.item_repository
 import db.item
-import service.security
 
 class items:
 
@@ -20,10 +19,11 @@ class items:
         item = db.item.item(None, code, name, price, None, created_by, categories)
         return self.item_repository.create(item)
 
-    def update_item(self, id, code, name, price, categories, user_id):
-        security = service.security.security()
+    def update_item(self, id, code, name, price, categories, updater_user_id):
         item = self.item_repository.get_by_id(id)
-        security.matchUser(item.created_by)
+
+        if updater_user_id != item.created_by:
+            raise ValueError("You do not have permission to update this item.")
 
         item.code = code
         item.name = name
@@ -31,3 +31,10 @@ class items:
         item.categories = categories
         # item = db.item.item(id, code, name, price, None, categories)
         return self.item_repository.update(item)
+
+    def delete_item(self, id, updater_user_id):
+        item = self.item_repository.get_by_id(id)
+        if updater_user_id != item.created_by:
+            raise ValueError("You do not have permission to update this item.")
+
+        self.item_repository.delete(id)

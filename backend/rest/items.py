@@ -33,4 +33,11 @@ def create_item():
 @security.authorized()
 def update_item(item_id):
     itemService = service.items.items(conn)
-    return util.rest_format(itemService.update_item(item_id, request.json['code'], request.json['name'], request.json['price'], request.json['categories']))
+    return util.rest_format(itemService.update_item(item_id, request.json['code'], request.json['name'], request.json['price'], request.json['categories'], security.getUserId()))
+
+@items_rest.route('/rest/v1/items/<int:item_id>', methods = ['DELETE'])
+@security.authorized()
+def delete_item(item_id):
+    itemService = service.items.items(conn)
+    itemService.update_item(item_id, security.getUserId())
+    return ""

@@ -28,4 +28,11 @@ def create_category():
 @security.authorized()
 def update_category(category_id):
     categoryService = service.categories.categories(conn)
-    return util.rest_format(categoryService.update_category(category_id, request.json['code'], request.json['name']))
+    return util.rest_format(categoryService.update_category(category_id, request.json['code'], request.json['name'], security.getUserId()))
+
+@categories_rest.route('/rest/v1/categories/<int:category_id>', methods = ['DELETE'])
+@security.authorized()
+def delete_category(category_id):
+    categoryService = service.categories.categories(conn)
+    categoryService.delete_category(category_id, security.getUserId())
+    return ""

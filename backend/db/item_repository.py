@@ -31,6 +31,12 @@ class item_repository:
 
         return item
 
+    def delete(self, id):
+        cur = self.conn.cursor()
+        cur.execute("""DELETE FROM items WHERE id = %s""", (id,))
+        cur.close()
+        self.conn.commit()
+
     def get_by_id(self, id):
         cur = self.conn.cursor()
         cur.execute("""SELECT i.id, i.code, i.name, i.price, i.created_on, i.created_by, array_to_string(array_agg(c.id), ',') as categories
@@ -38,7 +44,7 @@ FROM items i
 LEFT JOIN item_categories ic on ic.item_id = i.id
 INNER JOIN categories c ON c.id = ic.category_id
 WHERE i.id=%s
-GROUP BY i.id, i.code, i.name, i.price, i.created_on""", (id,))
+GROUP BY i.id, i.code, i.name, i.price, i.created_on, i.created_by""", (id,))
         row = cur.fetchone()
         cur.close()
 
