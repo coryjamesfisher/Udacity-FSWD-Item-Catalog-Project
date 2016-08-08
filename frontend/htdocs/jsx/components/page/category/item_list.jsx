@@ -62,6 +62,10 @@ module.exports = React.createClass({
         browserHistory.push('/item/create?category=' + this.state.category.id);
 	},
 
+	deleteItem: function(id) {
+		ItemActions.deleteItem(this.props.token, id);
+	},
+
 	render: function() {
 
 		var category = this.state.category,
@@ -74,11 +78,13 @@ module.exports = React.createClass({
 			addButton = <div><button onClick={this.addButtonClicked}>Add Item</button></div>
 		}
 
+		var self = this;
+
 		return <div>
 			Category - {category.name}
 			{items.map(function(result) {
 				var _link = "/item/" + result.id + "/view";
-				return <div key={result.id}><Link to={_link}>{result.code} - {result.name} {result.price}</Link></div>
+				return <div key={result.id}><Link to={_link}>{result.code} - {result.name} {result.price}</Link> <button onClick={self.deleteItem.bind(self, result.id)}>x</button></div>
 			})}
 			{addButton}
 		</div>

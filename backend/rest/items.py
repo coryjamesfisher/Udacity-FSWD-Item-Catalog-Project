@@ -39,5 +39,5 @@ def update_item(item_id):
 @security.authorized()
 def delete_item(item_id):
     itemService = service.items.items(conn)
-    itemService.update_item(item_id, security.getUserId())
+    itemService.delete_item(item_id, security.getUserId())
     return ""
