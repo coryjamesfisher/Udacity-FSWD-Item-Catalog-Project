@@ -1,6 +1,7 @@
 var CategoryActions = require('../../actions/CategoryActions.jsx');
 var CategoryStore = require('../../stores/CategoryStore.jsx');
 var Link = require('react-router').Link;
+var browserHistory = require('react-router').browserHistory;
 
 module.exports = React.createClass({
 
@@ -48,16 +49,25 @@ module.exports = React.createClass({
 		CategoryActions.deleteCategory(this.props.token, id);
 	},
 
+	editCategory: function(id) {
+		browserHistory.push('/category/' + id + '/edit');
+	},
+
 	render: function() {
 
 		var items = this.state.items,
 			self = this;
 
+
 		return <div>
 			Categories
 			{items.map(function(result) {
+
+				var deleteButton = <button onClick={self.deleteCategory.bind(self, result.id)}>x</button>;
+				var editButton = <button onClick={self.editCategory.bind(self, result.id)}>edit</button>;
                 var _link = "/category/" + result.id + "/list-items";
-				return <div key={result.id}>{result.id} - {result.code} <Link to={_link}>{result.name}</Link> <button onClick={self.deleteCategory.bind(self, result.id)}>x</button></div>
+
+				return <div key={result.id}>{result.id} - {result.code} <Link to={_link}>{result.name}</Link> {editButton} {deleteButton} </div>
 			})}
 
 		</div>

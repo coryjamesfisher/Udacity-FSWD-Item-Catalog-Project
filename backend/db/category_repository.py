@@ -15,6 +15,14 @@ class category_repository:
 
         return category
 
+    def update(self, category):
+        cur = self.conn.cursor()
+        cur.execute("""UPDATE categories SET code = %s, name = %s WHERE id = %s""", (category.code, category.name, category.id))
+        cur.close()
+        self.conn.commit()
+
+        return category
+
     def delete(self, id):
         cur = self.conn.cursor()
         cur.execute("""DELETE FROM categories WHERE id = %s""", (id,))

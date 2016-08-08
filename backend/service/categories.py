@@ -19,8 +19,15 @@ class categories:
         return self.category_repository.create(category)
 
     def update_category(self, id, code, name, updater_user_id):
-        #@todo this is busted
-        return db.category.category(id, code, name, updater_user_id)
+        category = self.get_category_by_id(id)
+
+        if updater_user_id != category.created_by:
+            raise ValueError("You do not have permission to update this category.")
+
+        category.code = code
+        category.name = name
+
+        return self.category_repository.update(category)
 
     def delete_category(self, id, updater_user_id):
         category = self.category_repository.get_by_id(id)

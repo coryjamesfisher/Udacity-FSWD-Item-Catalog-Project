@@ -51,6 +51,39 @@ module.exports = {
 		);
 	},
 
+	updateCategory: function(token, category, onSuccess) {
+
+		$.ajax(
+			{
+				url: "http://localhost:8080/rest/v1/categories/" + category.id,
+				method: "PUT",
+				contentType: "application/json",
+				beforeSend: function(xhr) {xhr.setRequestHeader('Authorization', 'Bearer ' + token);},
+				data: JSON.stringify({
+					"code": category.code,
+					"name": category.name
+				}),
+				error: function(error) {
+
+					AppDispatcher.dispatch({
+						actionType: "ERROR",
+						message: "Failed to create category."
+					});
+				}.bind(this),
+
+				success: function (result) {
+
+					AppDispatcher.dispatch({
+						actionType: "CATEGORY_UPDATE_COMPLETE",
+						item: JSON.parse(result)
+					});
+
+					onSuccess();
+				}
+			}
+		)
+	},
+
 	createCategory: function(token, code, name, onSuccess) {
 
 		$.ajax(

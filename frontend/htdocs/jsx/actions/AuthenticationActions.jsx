@@ -44,6 +44,7 @@ module.exports = {
             		"&redirect_uri=" + encodeURIComponent("http://localhost:8000/sso?provider=google") +
             		"&response_type=code" +
             		"&client_id=1099338626741-0qbg100alipuei46fhc3vemsgn6nh491.apps.googleusercontent.com";
+				return;
 		}
 
 		throw "Invalid 3rd party auth provider";

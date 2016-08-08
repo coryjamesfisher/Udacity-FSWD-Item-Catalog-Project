@@ -35,7 +35,8 @@ module.exports = React.createClass({
             return {
                 category: {
                     "code": "",
-                    "name": ""
+                    "name": "",
+                    "id": 0
                 },
                 error_message: AppStore.getError()
             }
@@ -77,7 +78,20 @@ module.exports = React.createClass({
 
     saveCategory: function(event) {
         event.preventDefault();
-        CategoryActions.createCategory(this.props.token, findDOMNode(this.refs.category_code).value, findDOMNode(this.refs.category_name).value, this.onCreateSuccess);
+
+        if (this.state.category.id) {
+            CategoryActions.updateCategory(this.props.token,  this.state.category, this.onCreateSuccess);
+        } else {
+            CategoryActions.createCategory(this.props.token, findDOMNode(this.refs.category_code).value, findDOMNode(this.refs.category_name).value, this.onCreateSuccess);
+        }
+    },
+
+
+    // Sets item state for any field
+    updateCategory: function(e) {
+        var categoryCopy = JSON.parse(JSON.stringify(this.state.category));
+        categoryCopy[e.target.getAttribute('data-field')] = e.target.value;
+        this.setState({"category": categoryCopy});
     },
 
     render: function() {
@@ -89,8 +103,9 @@ module.exports = React.createClass({
                 {this.state.error_message}
             </p>
             <p>
-                <input type="text" placeholder="Category Code" ref="category_code" value={category.code}/>
-                <input type="text" placeholder="Category Name" ref="category_name" value={category.name}/>
+                <input type="hidden" placeholder="ID" ref="item_id" value={this.state.category.id}/>
+                <input type="text" placeholder="Category Code" ref="category_code" data-field="code" value={category.code} onChange={this.updateCategory}/>
+                <input type="text" placeholder="Category Name" ref="category_name" data-field="name" value={category.name} onChange={this.updateCategory}/>
             </p>
             <p>
                 <button type="submit">Save</button>

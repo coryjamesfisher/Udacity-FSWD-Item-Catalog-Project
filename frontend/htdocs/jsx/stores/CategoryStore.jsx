@@ -58,6 +58,19 @@ AppDispatcher.register(function(action) {
             CategoryStore.emitChange();
             break;
 
+        case "CATEGORY_UPDATE_COMPLETE":
+            if (action.item && action.item.length) {
+
+                var itemIndex = _categories.findIndex(function(category){
+                    return category.id == action.item.id
+                });
+
+                _categories[itemIndex] = action.item;
+            }
+
+            CategoryStore.emitChange();
+            break;
+
         case "CATEGORY_CREATE_COMPLETE":
 
             if (action.item && action.item.length > 0) {
@@ -73,8 +86,8 @@ AppDispatcher.register(function(action) {
                 // Filter out this item
                 return action.category_id != _category.id;
             });
-            CategoryStore.emitChange();
 
+            CategoryStore.emitChange();
             break;
 
         default:
