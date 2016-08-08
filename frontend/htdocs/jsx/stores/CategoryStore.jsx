@@ -67,6 +67,16 @@ AppDispatcher.register(function(action) {
             CategoryStore.emitChange();
             break;
 
+        case "CATEGORY_DELETE_COMPLETE":
+            _categories = _categories.filter(function(_category) {
+
+                // Filter out this item
+                return action.category_id != _category.id;
+            });
+            CategoryStore.emitChange();
+
+            break;
+
         default:
         // no op
     }

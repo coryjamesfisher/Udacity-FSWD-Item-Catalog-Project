@@ -44,15 +44,20 @@ module.exports = React.createClass({
         this.setState(this.fetchState());
     },
 
+	deleteCategory: function(id) {
+		CategoryActions.deleteCategory(this.props.token, id);
+	},
+
 	render: function() {
 
-		var items = this.state.items;
+		var items = this.state.items,
+			self = this;
 
 		return <div>
 			Categories
 			{items.map(function(result) {
                 var _link = "/category/" + result.id + "/list-items";
-				return <div key={result.id}>{result.id} - {result.code} <Link to={_link}>{result.name}</Link></div>
+				return <div key={result.id}>{result.id} - {result.code} <Link to={_link}>{result.name}</Link> <button onClick={self.deleteCategory.bind(self, result.id)}>x</button></div>
 			})}
 
 		</div>

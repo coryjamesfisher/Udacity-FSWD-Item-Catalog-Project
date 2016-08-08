@@ -43,8 +43,8 @@ CREATE TABLE items
 
 CREATE TABLE item_categories
 (
-	item_id INT NOT NULL REFERENCES items(id),
-	category_id INT NOT NULL REFERENCES categories(id),
+	item_id INT NOT NULL REFERENCES items(id) ON DELETE CASCADE,
+	category_id INT NOT NULL REFERENCES categories(id) ON DELETE CASCADE,
 	PRIMARY KEY (item_id, category_id)
 );
 

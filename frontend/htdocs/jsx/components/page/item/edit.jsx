@@ -33,6 +33,7 @@ module.exports = React.createClass({
 	},
 
 	componentWillUnmount: function() {
+        ItemStore.editing();
 		ItemStore.removeChangeListener(this._onChange);
 		AppStore.removeChangeListener(this._onChange);
         AppActions.clearErrors();
@@ -40,7 +41,8 @@ module.exports = React.createClass({
 
 	fetchState: function() {
 
-        var itemId = this.props.params.itemId || this.state.item.id || ItemStore.getLastCreated() || null;
+        var itemId = this.props.params.itemId || this.state.item.id || null;
+        var status = ItemStore.getCurrentItemStatus();
 
         if (itemId === null || typeof itemId == 'undefined') {
             return {
@@ -51,7 +53,7 @@ module.exports = React.createClass({
                     "price": "",
                     "categories": []
                 },
-                "status": ItemStore.getCurrentItemStatus(),
+                "status": status,
                 "lastCreatedItem": ItemStore.getLastCreated(),
                 error_message: AppStore.getError()
             }
@@ -60,9 +62,10 @@ module.exports = React.createClass({
         var item = ItemStore.getItems(null, itemId)[0];
 
 		return {
-			item: item,
-            status: ItemStore.getCurrentItemStatus(),
-            error_message: AppStore.getError()
+			"item": item,
+            "status": status,
+            "lastCreatedItem": ItemStore.getLastCreated(),
+            "error_message": AppStore.getError()
 		}
 	},
 
@@ -78,7 +81,7 @@ module.exports = React.createClass({
             itemId = props.params.itemId;
         }
 
-		if (itemId !== null) {
+		if (itemId !== null && typeof itemId !== 'undefined') {
             ItemActions.loadItems(this.props.token, null, itemId);
 		} else {
             // Force a change to clear any existing values.
@@ -93,8 +96,10 @@ module.exports = React.createClass({
         var self = this;
 
         if (self.state.status == "saved") {
+
             setTimeout(function() {
-                    browserHistory.push('/item/' + self.state.item.id + '/view');
+                    var itemId = typeof self.state.item !== 'undefined' && Number.isInteger(self.state.item.id) ? self.state.item.id : self.state.lastCreatedItem;
+                    browserHistory.push('/item/' + itemId + '/view');
             }, 1);
         }
     },

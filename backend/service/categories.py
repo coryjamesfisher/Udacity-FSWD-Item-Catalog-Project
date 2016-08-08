@@ -1,10 +1,12 @@
 import db.category_repository
 import db.category
+import service.items
 
 class categories:
 
     def __init__(self, conn):
-       self.category_repository = db.category_repository.category_repository(conn)
+        self.category_repository = db.category_repository.category_repository(conn)
+        self.item_service = service.items.items(conn)
 
     def get_categories(self):
         return self.category_repository.get_all()

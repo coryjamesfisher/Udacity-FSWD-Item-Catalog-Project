@@ -117,6 +117,7 @@ AppDispatcher.register(function(action) {
             break;
 
         case "ITEM_UPDATING":
+        case "ITEM_DELETING":
             ItemStore.saving();
             break;
 
@@ -136,6 +137,33 @@ AppDispatcher.register(function(action) {
 
             ItemStore.saved();
             ItemStore.emitChange();
+            break;
+
+        case "CATEGORY_DELETE_COMPLETE":
+            _items = _items.filter(function(_item) {
+                for (var cat in _item.categories) {
+
+                    if (cat == action.category_id) {
+                        return true;
+                    }
+                }
+
+                return false;
+            });
+            ItemStore.emitChange();
+
+            break;
+
+        case "ITEM_DELETE_COMPLETE":
+            _items = _items.filter(function(_item) {
+
+                // Filter out this item
+                return action.item_id != _item.id;
+            });
+
+            ItemStore.saved();
+            ItemStore.emitChange();
+
             break;
 
         default:

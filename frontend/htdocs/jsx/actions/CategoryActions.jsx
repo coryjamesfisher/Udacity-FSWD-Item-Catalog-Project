@@ -82,5 +82,34 @@ module.exports = {
 				}
 			}
 		)
+	},
+
+	deleteCategory: function(token, id) {
+		AppDispatcher.dispatch({
+			actionType: "CATEGORY_DELETING",
+			category_id: id
+		});
+		$.ajax(
+			{
+				url: "http://localhost:8080/rest/v1/categories/" + id,
+				method: "DELETE",
+				beforeSend: function(xhr) {xhr.setRequestHeader('Authorization', 'Bearer ' + token);},
+				error: function(error) {
+
+					AppDispatcher.dispatch({
+						actionType: "ERROR",
+						message: "Failed to delete category."
+					});
+				}.bind(this),
+
+				success: function (result) {
+
+					AppDispatcher.dispatch({
+						actionType: "CATEGORY_DELETE_COMPLETE",
+						category_id: id
+					});
+				}
+			}
+		)
 	}
 };

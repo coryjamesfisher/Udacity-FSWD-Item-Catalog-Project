@@ -61,7 +61,7 @@ module.exports = {
 					"code": item.code,
 					"name": item.name,
 					"price": item.price,
-					"categories": [1]
+					"categories": item.categories
 				}),
 				error: function(error) {
 
@@ -124,6 +124,35 @@ module.exports = {
 					AppDispatcher.dispatch({
 						actionType: "ITEM_CREATE_COMPLETE",
 						item: item
+					});
+				}
+			}
+		);
+	},
+
+	deleteItem: function(token, id) {
+		AppDispatcher.dispatch({
+			actionType: "ITEM_DELETING",
+			item_id: id
+		});
+		$.ajax(
+			{
+				url: "http://localhost:8080/rest/v1/items/" + id,
+				method: "DELETE",
+				beforeSend: function(xhr) {xhr.setRequestHeader('Authorization', 'Bearer ' + token);},
+				error: function(error) {
+
+					AppDispatcher.dispatch({
+						actionType: "ERROR",
+						message: "Failed to delete item."
+					});
+				}.bind(this),
+
+				success: function (result) {
+
+					AppDispatcher.dispatch({
+						actionType: "ITEM_DELETE_COMPLETE",
+						item_id: id
 					});
 				}
 			}
