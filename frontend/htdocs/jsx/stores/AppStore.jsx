@@ -4,11 +4,11 @@ var assign = require('object-assign');
 
 var CHANGE_EVENT = 'change';
 
-var _error = null;
+var _errors = [];
 
 var AppStore = assign({}, EventEmitter.prototype, {
 
-    getError: function() { return _error; },
+    getErrors: function() { return _errors; },
 
     emitChange: function() { this.emit(CHANGE_EVENT); },
     addChangeListener: function(callback) { this.on(CHANGE_EVENT, callback); },
@@ -22,7 +22,9 @@ AppDispatcher.register(function(action) {
         case "ERROR":
 
             if (action.message && action.message.length > 0) {
-               _error = action.message;
+                _errors[_errors.length] = action.message;
+            } else if (action.messages) {
+                _errors = action.messages;
             }
 
             AppStore.emitChange();
@@ -30,7 +32,7 @@ AppDispatcher.register(function(action) {
 
         case "ERROR_PROCESSED":
 
-            _error = null;
+            _errors = [];
 
             AppStore.emitChange();
             break;

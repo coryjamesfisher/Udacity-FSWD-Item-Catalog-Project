@@ -5,5 +5,11 @@ module.exports = {
         AppDispatcher.dispatch({
             actionType: "ERROR_PROCESSED"
         });
+    },
+    setErrors: function(messages) {
+        AppDispatcher.dispatch({
+            actionType: "ERROR",
+            messages: messages
+        });
     }
 };

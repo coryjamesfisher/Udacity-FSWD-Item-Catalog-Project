@@ -19,7 +19,7 @@ module.exports = React.createClass({
                     "categories": []
                 },
                 "status": ItemStore.getCurrentItemStatus(),
-                error_message: AppStore.getError()
+                errors: AppStore.getErrors()
         };
 	},
 
@@ -55,17 +55,17 @@ module.exports = React.createClass({
                 },
                 "status": status,
                 "lastCreatedItem": ItemStore.getLastCreated(),
-                error_message: AppStore.getError()
+                errors: AppStore.getErrors()
             }
         }
 
-        var item = ItemStore.getItems(null, itemId)[0];
+        var item = this.state.item && this.state.item.id == itemId ? this.state.item : ItemStore.getItems(null, itemId)[0];
 
 		return {
 			"item": item,
             "status": status,
             "lastCreatedItem": ItemStore.getLastCreated(),
-            "error_message": AppStore.getError()
+            "errors": AppStore.getErrors()
 		}
 	},
 
@@ -108,6 +108,27 @@ module.exports = React.createClass({
     saveItem: function(event) {
         event.preventDefault();
 
+        var errors = [];
+        if (this.state.item.name == '') {
+            errors.push("Please enter the item name.");
+        }
+
+        if (this.state.item.code == '') {
+            errors.push("Please enter the item code.");
+        }
+
+        var price = parseFloat(this.state.item.price.replace("$", ""));
+        if (isNaN(price)) {
+            errors.push("Please enter a valid dollar amount.");
+        }
+
+        if (errors.length > 0) {
+            AppActions.setErrors(errors);
+            return;
+        }
+
+        AppActions.clearErrors();
+
         if (this.state.item.id) {
 
             ItemActions.updateItem(
@@ -138,9 +159,9 @@ module.exports = React.createClass({
     render: function() {
 
         return <form onSubmit={this.saveItem}>
-            <p>
-                {this.state.error_message}
-            </p>
+            {this.state.errors.map(function(error, index) {
+                return <p key={index}>{error}</p>
+            })}
             <p>
                 <input type="hidden" placeholder="ID" ref="item_id" value={this.state.item.id}/>
                 <input type="text" placeholder="Code" ref="item_code" value={this.state.item.code} data-field="code" onChange={this.updateItem} />

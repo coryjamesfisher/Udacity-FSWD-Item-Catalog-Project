@@ -31,20 +31,20 @@ module.exports = React.createClass({
 
         let { categoryId } = this.props.params || null;
 
-        if (categoryId === null) {
+        if (categoryId === null || typeof categoryId === 'undefined') {
             return {
                 category: {
                     "code": "",
                     "name": "",
                     "id": 0
                 },
-                error_message: AppStore.getError()
+                errors: AppStore.getErrors()
             }
         }
 
 		return {
-			category: CategoryStore.getCategory(categoryId),
-            error_message: AppStore.getError()
+			category: this.state && this.state.category && this.state.category.id == categoryId ? this.state.category : CategoryStore.getCategory(categoryId),
+            errors: AppStore.getErrors()
 		}
 	},
 
@@ -79,10 +79,26 @@ module.exports = React.createClass({
     saveCategory: function(event) {
         event.preventDefault();
 
+        var errors = [];
+        if (this.state.category.name == '') {
+            errors.push("Please enter the category name.");
+        }
+
+        if (this.state.category.code == '') {
+            errors.push("Please enter the category code.");
+        }
+
+        if (errors.length > 0) {
+            AppActions.setErrors(errors);
+            return;
+        }
+
+        AppActions.clearErrors();
+
         if (this.state.category.id) {
             CategoryActions.updateCategory(this.props.token,  this.state.category, this.onCreateSuccess);
         } else {
-            CategoryActions.createCategory(this.props.token, findDOMNode(this.refs.category_code).value, findDOMNode(this.refs.category_name).value, this.onCreateSuccess);
+            CategoryActions.createCategory(this.props.token, this.state.category, this.onCreateSuccess);
         }
     },
 
@@ -99,9 +115,9 @@ module.exports = React.createClass({
         var category = this.state.category;
 
         return <form onSubmit={this.saveCategory}>
-            <p>
-                {this.state.error_message}
-            </p>
+            {this.state.errors.map(function(error, index) {
+                return <p key={index}>{error}</p>
+            })}
             <p>
                 <input type="hidden" placeholder="ID" ref="item_id" value={this.state.category.id}/>
                 <input type="text" placeholder="Category Code" ref="category_code" data-field="code" value={category.code} onChange={this.updateCategory}/>

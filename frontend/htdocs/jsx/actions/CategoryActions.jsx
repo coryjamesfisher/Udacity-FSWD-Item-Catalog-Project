@@ -84,7 +84,7 @@ module.exports = {
 		)
 	},
 
-	createCategory: function(token, code, name, onSuccess) {
+	createCategory: function(token, category, onSuccess) {
 
 		$.ajax(
 			{
@@ -93,8 +93,8 @@ module.exports = {
 				contentType: "application/json",
 				beforeSend: function(xhr) {xhr.setRequestHeader('Authorization', 'Bearer ' + token);},
 				data: JSON.stringify({
-					"code": code,
-					"name": name
+					"code": category.code,
+					"name": category.name
 				}),
 				error: function(error) {
 
