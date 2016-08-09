@@ -17,7 +17,7 @@ class google:
 
         if (google.user_info == None):
             flow = client.flow_from_clientsecrets(
-             'config/google_sso.json',
+             '/vagrant/backend/config/google_sso.json',
              scope='profile email',
              redirect_uri='http://localhost:8000/sso?provider=google')
 

@@ -1,13 +1,8 @@
 #!/usr/bin/python
+
 from flask import Flask, jsonify
 from rest import categories, items, auth
 from client import sample
-
-# DATABASE = '/tmp/item_catalog.db'
-# DEBUG = True
-# SECRET_KEY = 'somedevkey'
-# USERNAME = 'admin'
-# PASSWORD = 'default'
 
 app = Flask(__name__)
 

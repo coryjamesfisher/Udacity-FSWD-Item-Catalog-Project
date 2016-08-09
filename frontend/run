@@ -4,6 +4,9 @@ var http = require("http"),
   url = require("url"),
   fs = require("fs");
 
+// Process requests from the frontend dir
+process.chdir("/vagrant/frontend");
+
 // Port from arg default 8000
 const PORT = process.argv[2] || 8000;
 
