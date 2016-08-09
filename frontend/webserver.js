@@ -51,8 +51,6 @@ function doFileRead(response, filename, contentType) {
         }
 
         response.writeHead(200, {"Content-Type": contentType, "Access-Control-Allow-Origin": "*"});
-//        response.write(file, "binary");
- //       response.end("\n");
 	response.end(file, 'utf-8');
 	return;
     });
