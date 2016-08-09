@@ -13,9 +13,9 @@ Endpoint Documentation
 --------------------------------------
 **Authentication**
 
-POST /service/rest/v1/auth/sso/{provider_id}/auth_or_register
-POST /service/rest/v1/auth/sso/{provider_id}/auth
-POST /service/rest/v1/auth/sso/{provider_id}/register
+POST /service/rest/v1/auth/sso/{provider_id}/auth_or_register  
+POST /service/rest/v1/auth/sso/{provider_id}/auth  
+POST /service/rest/v1/auth/sso/{provider_id}/register  
 ```bash
 curl -XPOST --data "auth_token=abcd1234" http://localhost:8080/service/rest/v1/auth/sso/1/auth_or_register
 curl -XPOST --data "auth_token=abcd1234" http://localhost:8080/service/rest/v1/auth/sso/1/auth
