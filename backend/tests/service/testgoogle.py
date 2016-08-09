@@ -12,7 +12,6 @@ class TestGoogle(unittest.TestCase):
        cur.execute("CREATE TEMPORARY TABLE users as SELECT * FROM users where 1=0;")
        cur.execute("CREATE TEMPORARY SEQUENCE test_user_sequence START WITH 1")
        cur.execute("ALTER TABLE users ALTER COLUMN id SET DEFAULT nextval('test_user_sequence')")
-       cur.execute("INSERT INTO users(first_name, last_name, email, google_id) values('Cory', 'Fisher', 'coryjamesfisher@forthecoder.com', '117370290112067995028')")
        cur.close()
        self.conn.commit()
 

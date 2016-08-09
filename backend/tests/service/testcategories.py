@@ -57,7 +57,7 @@ class TestCategories(unittest.TestCase):
         self.assertIsInstance(category, db.category.category)
 
     def test_update_category(self):
-        category = self.categoriesService.update_category(2, "TEST2", "Test Category2", 1)
+        category = self.categoriesService.update_category(1, "TEST2", "Test Category2", 1)
         self.assertIsInstance(category, db.category.category)
 
     def test_delete_category(self):
