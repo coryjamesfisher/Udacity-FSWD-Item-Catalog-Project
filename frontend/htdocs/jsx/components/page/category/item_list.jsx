@@ -74,6 +74,7 @@ module.exports = React.createClass({
 		var mode = this.props.params;
 
 		var addButton = "";
+		var deleteButton = "";
 		if (this.props.loggedIn == true) {
 			addButton = <div><button onClick={this.addButtonClicked}>Add Item</button></div>
 		}
@@ -83,8 +84,15 @@ module.exports = React.createClass({
 		return <div>
 			Category - {category.name}
 			{items.map(function(result) {
+
+
+				var deleteButton = "";
+				if (self.props.loggedIn == true) {
+					deleteButton = <button onClick={self.deleteItem.bind(self, result.id)}>x</button>
+				}
+
 				var _link = "/item/" + result.id + "/view";
-				return <div key={result.id}><Link to={_link}>{result.code} - {result.name} {result.price}</Link> <button onClick={self.deleteItem.bind(self, result.id)}>x</button></div>
+				return <div key={result.id}><Link to={_link}>{result.code} - {result.name} {result.price}</Link> {deleteButton}</div>
 			})}
 			{addButton}
 		</div>

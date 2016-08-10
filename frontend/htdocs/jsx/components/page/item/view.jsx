@@ -66,7 +66,12 @@ module.exports = React.createClass({
 		}
 
 		return <div key={item.id}>
-            {item.name} {buttons}
+			<p>
+			{item.code} - {item.name} {item.price} {buttons}
+			</p>
+			<p>
+			Todo: Extra details about item here
+			</p>
 		</div>
 	}
 });

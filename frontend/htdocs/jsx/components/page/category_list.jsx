@@ -63,8 +63,13 @@ module.exports = React.createClass({
 			Categories
 			{items.map(function(result) {
 
-				var deleteButton = <button onClick={self.deleteCategory.bind(self, result.id)}>x</button>;
-				var editButton = <button onClick={self.editCategory.bind(self, result.id)}>edit</button>;
+				var deleteButton = "";
+				var editButton = "";
+				if (self.props.loggedIn == true) {
+					var deleteButton = <button onClick={self.deleteCategory.bind(self, result.id)}>x</button>;
+					var editButton = <button onClick={self.editCategory.bind(self, result.id)}>edit</button>;
+				}
+
                 var _link = "/category/" + result.id + "/list-items";
 
 				return <div key={result.id}>{result.id} - {result.code} <Link to={_link}>{result.name}</Link> {editButton} {deleteButton} </div>
