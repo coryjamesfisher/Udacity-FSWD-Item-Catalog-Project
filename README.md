@@ -9,20 +9,33 @@ Applications
 
 Useful Commands
 --------------------------------------
-1. **Build Assets**
+1. **Start Vagrant box**
   ```bash
-gulp init
+vagrant up
 ```
 
-2. **Start Services**
+2. **Build Assets**
   ```bash
-./backend/run
+cd /vagrant/frontend && gulp js
 ```
 
-3. **Start Catalog Site**
+3. **Start Rest Services**
   ```bash
-./frontend/run
+cd /vagrant && ./backend/run
 ```
+
+4. **Start Catalog Site**
+  ```bash
+cd /vagrant && ./frontend/run
+```
+
+Loading The Website
+--------------------------------------
+If you followed the steps above you should be able to access the website here:  
+http://localhost:8000/  
+
+If you wish to write your own frontend/client you can follow the docs in the
+backend readme.  
 
 Project Structure
 --------------------------------------
