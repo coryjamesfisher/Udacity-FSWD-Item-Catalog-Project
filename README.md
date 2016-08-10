@@ -44,3 +44,4 @@ Project Structure
 |**[backend](backend)**     | Application Server Related Code & Assets     |
 |**[frontend](frontend)**   | Website Related Code & Assets                |
 |**[plugins](plugins)**     | Plugins for the Catalog[None Exist]          |
+|**[schema](schema)**       | Schema for the catalog database & user setup |
